@@ -10,11 +10,6 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
-});
-
 // Inicialización de la Estructura de Tablas y Relaciones
 db.serialize(() => {
     // 1. Instancias
@@ -154,13 +149,8 @@ app.post('/api/login', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-// Ruta temporal para crear el usuario administrador inicial
-app.get('/api/crear-admin-test', (req, res) => {
-    const query = `INSERT OR IGNORE INTO usuarios (correo, password, nombre, rol, token, activo) VALUES (?, ?, ?, ?, ?, ?)`;
-    db.run(query, ['admin@caritas.org.gt', '123456', 'Administrador DHI', 'Director', 'TOK-ADMIN01', 0], function(err) {
-        if (err) return res.status(400).json({ error: err.message });
-        res.json({ mensaje: "Usuario administrador creado con éxito. Token: TOK-ADMIN01" });
-    });
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
 const path = require('path');
 
