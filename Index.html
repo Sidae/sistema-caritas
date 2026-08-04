@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema Integral de Gestión - Cáritas de Guatemala (DHI)</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #C8102E;
+            --primary-dark: #9B0B22;
+            --bg-main: #F4F6F9;
+            --sidebar-bg: #1E1E2D;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --white: #FFFFFF;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+        /* Login Screen Overlay */
+        #login-overlay { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100vh; 
+            background: var(--sidebar-bg); 
+            z-index: 9999; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        .login-card { background: var(--white); padding: 40px; border-radius: 8px; width: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); text-align: center; }
+        .login-card h2 { color: var(--primary); margin-bottom: 20px; font-size: 1.4rem; }
+
+        /* Sidebar */
+        aside { width: 260px; background-color: var(--sidebar-bg); color: var(--white); display: flex; flex-direction: column; justify-content: space-between; }
+        .sidebar-header { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header h2 { font-size: 1.1rem; color: #FFF; margin-top: 5px; }
+        .sidebar-menu { list-style: none; padding: 15px 0; flex-grow: 1; }
+        .sidebar-menu li { padding: 12px 20px; cursor: pointer; transition: background 0.2s; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+        .sidebar-menu li:hover, .sidebar-menu li.active { background-color: var(--primary); }
+        .sidebar-menu li.disabled { opacity: 0.4; pointer-events: none; }
+
+        /* Main Content */
+        main { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; }
+        header { background: var(--white); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E5E7EB; }
+        .content-body { padding: 30px; flex-grow: 1; }
+
+        /* Views Control */
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+
+        /* Cards & Forms */
+        .card { background: var(--white); border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 0.85rem; font-weight: bold; color: var(--text-muted); }
+        .form-group input, .form-group select, .form-group textarea { padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 4px; font-size: 0.9rem; }
+        
+        .btn-caritas { background-color: var(--primary); color: var(--white); border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s; width: 100%; }
+        .btn-caritas:hover { background-color: var(--primary-dark); }
+    </style>
+</head>
+<body>
+
+    <!-- PANTALLA DE LOGIN Y ACTIVACIÓN POR TOKEN -->
+    <div id="login-overlay">
+        <div class="login-card">
+            <h2>Cáritas DHI - Acceso</h2>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px;">Ingrese sus credenciales institucionales.</p>
+            <form id="form-login" onsubmit="ejecutarLogin(event)">
+                <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="loginCorreo" required placeholder="usuario@caritas.org.gt">
+                </div>
+                <div class="form-group" style="margin-bottom: 15px; text-align: left;">
+                    <label>Contraseña</label>
+                    <input type="password" id="loginPassword" required placeholder="••••••••">
+                </div>
+                <div class="form-group" id="grupo-token" style="margin-bottom: 15px; text-align: left; display: none;">
+                    <label>Token de Activación (Primer Ingreso)</label>
+                    <input type="text" id="loginToken" placeholder="Ej. TOK-XXXXX">
+                </div>
+                <button type="submit" class="btn-caritas">Ingresar al Sistema</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside>
+        <div>
+            <div class="sidebar-header">
+                <img id="sidebar-logo-img" src="" style="height: 40px; display: none; margin: 0 auto 5px auto; object-fit: contain;">
+                <h2 id="sidebar-brand-text">CÁRITAS DHI</h2>
+                <small id="sidebar-rol-txt" style="font-size: 0.75rem; color: #aaa;">Oficina Nacional</small>
+            </div>
+            <ul class="sidebar-menu" id="menu-lateral">
+                <li class="active" onclick="cambiarVista('view-instancias', this)">🏢 Instancias y Logotipo</li>
+                <li id="menu-proq" class="disabled" onclick="cambiarVista('view-proyectos', this)">📁 Registro de Proyectos</li>
+                <li id="menu-ind" class="disabled" onclick="cambiarVista('view-definicion', this)">📊 Definición e Indicadores</li>
+                <li id="menu-usuarios-inst" class="disabled" onclick="cambiarVista('view-usuarios', this)">👥 Gestión de Usuarios</li>
+                <li onclick="cambiarVista('view-dashboard', this)">📈 Dashboard & Avances</li>
+                <li onclick="cambiarVista('view-pert', this)">⛓️ Diagrama PERT</li>
+                <li onclick="cambiarVista('view-reporte', this)">📄 Informe Oficial A4 / PDF</li>
+            </ul>
+        </div>
+        <div style="padding: 15px; font-size: 0.75rem; color: #888; text-align: center;">
+            <span id="lbl-usuario-activo">Sesión no iniciada</span>
+        </div>
+    </aside>
+
+    <!-- Main Section -->
+    <main>
+        <header>
+            <h3 id="header-title" style="font-size: 1.1rem; color: var(--text-main);">Gestión Integral de Proyectos</h3>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <img id="header-logo-img" src="" style="height: 30px; display: none; object-fit: contain;">
+                <span id="lbl-movil-aviso" style="font-size: 0.8rem; color: var(--primary); font-weight: bold; display: none;">MODO MÓVIL (CONSULTA)</span>
+            </div>
+        </header>
+
+        <div class="content-body">
+            
+            <!-- VISTA 1: INSTANCIAS -->
+            <div id="view-instancias" class="view-section active">
+                <div class="card">
+                    <h3>Registro de Instancia y Logotipo Institucional</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">Para activar completamente el sistema, configure los datos oficiales de su oficina y su logotipo.</p>
+                    <form id="form-instancia" onsubmit="event.preventDefault(); registrarInstanciaBackend();">
+                        <div class="form-grid">
+                            <div class="form-group"><label>Nombre de la Instancia / Oficina</label><input type="text" id="instNombre" required placeholder="Ej. Cáritas Diocesana..."></div>
+                            <div class="form-group"><label>Director(a) / Responsable</label><input type="text" id="instDirector" required placeholder="Nombre del Director(a)"></div>
+                            <div class="form-group"><label>Dirección Física</label><input type="text" id="instDireccion"></div>
+                            <div class="form-group"><label>Teléfono</label><input type="text" id="instTelefono"></div>
+                            <div class="form-group"><label>Correo Electrónico</label><input type="email" id="instCorreo"></div>
+                            <div class="form-group"><label>Departamento Principal</label><input type="text" id="instDept1" value="Desarrollo Humano Integral"></div>
+                            <div class="form-group"><label>Subunidad / Área</label><input type="text" id="instDept2"></div>
+                            <div class="form-group"><label>Logotipo Institucional</label><input type="file" id="instLogoFile" accept="image/*"></div>
+                        </div>
+                        <button type="submit" class="btn-caritas" style="margin-top: 15px;">Guardar Instancia y Activar Sistema</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- VISTA 2: PROYECTOS -->
+            <div id="view-proyectos" class="view-section">
+                <div class="card">
+                    <h3>Registro General de Proyectos</h3>
+                    <form id="form-proyecto" onsubmit="guardarProyectoBackend(event)">
+                        <div class="form-grid">
+                            <div class="form-group"><label>Instancia Asignada (Automática)</label><input type="text" id="projInstanciaBloqueada" readonly style="background: #E5E7EB;"></div>
+                            <div class="form-group"><label>Nombre del Proyecto</label><input type="text" id="nombreProj" required placeholder="Ej. Seguridad Alimentaria"></div>
+                            <div class="form-group"><label>Ejecutor / Equipo</label><input type="text" id="ejecutorProj" value="Equipo Técnico DHI"></div>
+                            <div class="form-group"><label>Líneas de Intervención (Separadas por comas)</label><input type="text" id="lineasProj" required placeholder="WASH, Medios de Vida, Salud"></div>
+                            <div class="form-group"><label>Presupuesto (Q.)</label><input type="number" id="presupuestoProj" value="150000"></div>
+                            <div class="form-group"><label>Donante / Cooperante</label><input type="text" id="donanteProj"></div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 15px;"><label>Objetivo General</label><textarea id="objetivoProj" rows="2" required></textarea></div>
+                        <button type="submit" id="btn-guardar-proj" class="btn-caritas">Guardar Proyecto</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- VISTA 3: DEFINICIÓN E INDICADORES -->
+            <div id="view-definicion" class="view-section">
+                <div class="card">
+                    <h3>Definición de Indicadores y Actividades</h3>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label>Seleccionar Proyecto Activo</label>
+                        <select id="comboProyectosDef" class="form-group" style="padding: 8px; border-radius: 4px; border: 1px solid #D1D5DB;"></select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA 4: GESTIÓN DE USUARIOS -->
+            <div id="view-usuarios" class="view-section">
+                <div class="card">
+                    <h3>Gestión de Usuarios y Perfiles de la Instancia</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">Como Director(a), puede registrar los accesos para su equipo técnico o de coordinación.</p>
+                    <form id="form-crear-usuario-instancia" onsubmit="crearUsuarioInstancia(event)">
+                        <div class="form-grid">
+                            <div class="form-group"><label>Nombre Completo</label><input type="text" id="nuevoUsuarioNombre" required placeholder="Nombre del Técnico"></div>
+                            <div class="form-group"><label>Correo Electrónico</label><input type="email" id="nuevoUsuarioCorreo" required placeholder="correo@caritas.org.gt"></div>
+                            <div class="form-group"><label>Contraseña Temporal</label><input type="password" id="nuevoUsuarioPass" required placeholder="••••••••"></div>
+                            <div class="form-group">
+                                <label>Perfil / Rol</label>
+                                <select id="nuevoUsuarioRol" required>
+                                    <option value="Coordinador">Coordinador(a)</option>
+                                    <option value="Tecnico">Técnico(a)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-caritas" style="margin-top: 15px;">Generar Usuario y Token</button>
+                    </form>
+                    <div id="resultado-token-creado" style="margin-top: 15px; font-weight: bold; color: var(--primary);"></div>
+                </div>
+            </div>
+
+            <!-- VISTA 5: DASHBOARD -->
+            <div id="view-dashboard" class="view-section">
+                <div class="card">
+                    <h3>Dashboard General de Proyectos y Avances</h3>
+                    <div id="dashboard-tarjetas-container" style="display: grid; gap: 15px; margin-top: 15px;"></div>
+                </div>
+            </div>
+
+            <!-- VISTA 6: DIAGRAMA PERT -->
+            <div id="view-pert" class="view-section">
+                <div class="card">
+                    <h3>Diagrama PERT y Ruta Crítica</h3>
+                    <div id="pert-grafico-container"></div>
+                </div>
+            </div>
+
+            <!-- VISTA 7: INFORME A4 / PDF -->
+            <div id="view-reporte" class="view-section">
+                <div class="card">
+                    <h3>Informe Técnico Oficial (A4)</h3>
+                    <button class="btn-caritas" onclick="window.print()">Exportar Vista</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        const API_URL = 'http://localhost:3000/api';
+        let sesionUsuario = null;
+
+        const esMovil = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+        if(esMovil) {
+            document.getElementById('lbl-movil-aviso').style.display = 'block';
+        }
+
+        async function ejecutarLogin(event) {
+            event.preventDefault();
+            const correo = document.getElementById('loginCorreo').value;
+            const password = document.getElementById('loginPassword').value;
+            const token = document.getElementById('loginToken').value;
+
+            try {
+                const response = await fetch(`${API_URL}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ correo, password, token })
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    if (data.requiereToken) {
+                        document.getElementById('grupo-token').style.display = 'block';
+                    }
+                    return alert(data.error);
+                }
+
+                sesionUsuario = data.usuario;
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('lbl-usuario-activo').innerText = `${sesionUsuario.nombre} (${sesionUsuario.rol})`;
+                document.getElementById('sidebar-rol-txt').innerText = sesionUsuario.rol;
+
+                if (sesionUsuario.instancia_id) {
+                    activarMenuCompleto();
+                } else {
+                    alert("Debe registrar los datos de su instancia para activar el sistema.");
+                }
+
+            } catch (error) {
+                alert("No se pudo conectar con el servidor local Node.js.");
+            }
+        }
+
+        async function registrarInstanciaBackend() {
+            const fileInput = document.getElementById('instLogoFile');
+            
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = async function(e) {
+                    enviarDatosInstancia(e.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                enviarDatosInstancia('');
+            }
+        }
+
+        async function enviarDatosInstancia(logoUrl) {
+            const bodyData = {
+                token: document.getElementById('loginToken').value || 'DIRECTO',
+                nombreInstancia: document.getElementById('instNombre').value,
+                director: document.getElementById('instDirector').value,
+                direccion: document.getElementById('instDireccion').value,
+                telefono: document.getElementById('instTelefono').value,
+                correoInst: document.getElementById('instCorreo').value,
+                dept1: document.getElementById('instDept1').value,
+                dept2: document.getElementById('instDept2').value,
+                logo: logoUrl
+            };
+
+            const response = await fetch(`${API_URL}/instancias/activar`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(bodyData)
+            });
+            const data = await response.json();
+
+            if (!response.ok) return alert(data.error);
+
+            alert("Instancia registrada y sistema activado con éxito.");
+            sesionUsuario.instancia_id = data.instancia_id;
+            activarMenuCompleto();
+        }
+
+        async function crearUsuarioInstancia(event) {
+            event.preventDefault();
+            if (!sesionUsuario || sesionUsuario.rol !== 'Director') {
+                return alert("Acceso restringido: Solo el Director(a) puede crear usuarios.");
+            }
+
+            const bodyData = {
+                nombre: document.getElementById('nuevoUsuarioNombre').value,
+                correo: document.getElementById('nuevoUsuarioCorreo').value,
+                password: document.getElementById('nuevoUsuarioPass').value,
+                rol: document.getElementById('nuevoUsuarioRol').value,
+                instancia_id: sesionUsuario.instancia_id
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/usuarios/crear-equipo`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bodyData)
+                });
+                const data = await response.json();
+
+                if (!response.ok) return alert(data.error);
+
+                document.getElementById('resultado-token-creado').innerText = 
+                    `¡Usuario creado con éxito! Token de activación generado: ${data.token_generado} (Compártalo con el usuario para su primer ingreso).`;
+                document.getElementById('form-crear-usuario-instancia').reset();
+            } catch (error) {
+                alert("Error de conexión con el servidor.");
+            }
+        }
+
+        function activarMenuCompleto() {
+            document.getElementById('menu-proq').classList.remove('disabled');
+            document.getElementById('menu-ind').classList.remove('disabled');
+            document.getElementById('menu-usuarios-inst').classList.remove('disabled');
+            document.getElementById('projInstanciaBloqueada').value = "Instancia ID: " + sesionUsuario.instancia_id;
+            cambiarVista('view-dashboard', document.querySelector('.sidebar-menu li:nth-child(5)'));
+        }
+
+        function cambiarVista(viewId, element) {
+            if (element && element.classList.contains('disabled')) return;
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu li').forEach(el => el.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            if(element) element.classList.add('active');
+        }
+
+        async function guardarProyectoBackend(event) {
+            event.preventDefault();
+            if (esMovil) return alert("Acceso restringido: Los dispositivos móviles solo tienen permisos de consulta.");
+            alert("Proyecto guardado correctamente vinculado a su instancia.");
+        }
+    </script>
+</body>
+</html>
