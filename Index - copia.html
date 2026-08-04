@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema Integral de Gestión - Cáritas de Guatemala (DHI)</title>
+    <!-- Librería para generar PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary: #C8102E;
+            --primary-dark: #9B0B22;
+            --bg-main: #F4F6F9;
+            --sidebar-bg: #1E1E2D;
+            --text-main: #333333;
+            --text-muted: #666666;
+            --white: #FFFFFF;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: var(--bg-main); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+
+        /* Sidebar */
+        aside { width: 260px; background-color: var(--sidebar-bg); color: var(--white); display: flex; flex-direction: column; justify-content: space-between; }
+        .sidebar-header { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .sidebar-header h2 { font-size: 1.1rem; color: #FFF; margin-top: 5px; }
+        .sidebar-menu { list-style: none; padding: 15px 0; flex-grow: 1; }
+        .sidebar-menu li { padding: 12px 20px; cursor: pointer; transition: background 0.2s; font-size: 0.9rem; display: flex; align-items: center; gap: 10px; }
+        .sidebar-menu li:hover, .sidebar-menu li.active { background-color: var(--primary); }
+
+        /* Main Content */
+        main { flex-grow: 1; display: flex; flex-direction: column; overflow-y: auto; }
+        header { background: var(--white); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #E5E7EB; }
+        .content-body { padding: 30px; flex-grow: 1; }
+
+        /* Views */
+        .view-section { display: none; }
+        .view-section.active { display: block; }
+
+        /* Cards & Forms */
+        .card { background: var(--white); border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); margin-bottom: 20px; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .form-group { display: flex; flex-direction: column; gap: 5px; }
+        .form-group label { font-size: 0.85rem; font-weight: bold; color: var(--text-muted); }
+        .form-group input, .form-group select, .form-group textarea { padding: 8px 12px; border: 1px solid #D1D5DB; border-radius: 4px; font-size: 0.9rem; }
+        
+        .btn-caritas { background-color: var(--primary); color: var(--white); border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: background 0.2s; }
+        .btn-caritas:hover { background-color: var(--primary-dark); }
+
+        /* Tables */
+        .data-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .data-table th, .data-table td { border: 1px solid #E5E7EB; padding: 10px; text-align: left; font-size: 0.85rem; }
+        .data-table th { background-color: #F9FAFB; color: var(--text-muted); }
+
+        /* Status Pills */
+        .status-pill { padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold; display: inline-block; }
+        .pill-green { background: #D1FAE5; color: #065F46; }
+        .pill-yellow { background: #FEF3C7; color: #92400E; }
+        .pill-red { background: #FEE2E2; color: #991B1B; }
+
+        /* PERT & Visual Cards */
+        .pert-container { display: flex; flex-direction: column; gap: 15px; margin-top: 15px; }
+        .pert-node { background: #FFF; border-left: 4px solid var(--primary); padding: 15px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .pert-details { display: flex; gap: 20px; margin-top: 10px; font-size: 0.85rem; color: var(--text-muted); }
+
+        /* A4 Report Styles */
+        .a4-page { background: white; width: 210mm; min-height: 297mm; padding: 20mm; margin: 0 auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .a4-header { display: flex; justify-content: space-between; border-bottom: 2px solid var(--primary); padding-bottom: 15px; margin-bottom: 20px; }
+        .report-section-title { font-size: 1rem; font-weight: bold; color: var(--primary); border-bottom: 1px solid #E5E7EB; padding-bottom: 5px; margin: 20px 0 10px 0; }
+        .indicators-grid-a4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 15px; }
+        .indicator-card-a4 { background: #F9FAFB; padding: 10px; border: 1px solid #E5E7EB; font-size: 0.85rem; }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <aside>
+        <div>
+            <div class="sidebar-header">
+                <img id="sidebar-logo-img" src="" style="height: 40px; display: none; margin: 0 auto 5px auto; object-fit: contain;">
+                <h2 id="sidebar-brand-text">CÁRITAS DHI</h2>
+                <small style="font-size: 0.75rem; color: #aaa;">Oficina Nacional</small>
+            </div>
+            <ul class="sidebar-menu">
+                <li class="active" onclick="cambiarVista('view-instancias', this)">🏢 Instancias y Logotipo</li>
+                <li onclick="cambiarVista('view-proyectos', this)">📁 Registro de Proyectos</li>
+                <li onclick="cambiarVista('view-definicion', this)">📊 Definición e Indicadores</li>
+                <li onclick="cambiarVista('view-dashboard', this)">📈 Dashboard & Avances</li>
+                <li onclick="cambiarVista('view-pert', this)">⛓️ Diagrama PERT</li>
+                <li onclick="cambiarVista('view-reporte', this)">📄 Informe Oficial A4 / PDF</li>
+            </ul>
+        </div>
+        <div style="padding: 15px; font-size: 0.75rem; color: #888; text-align: center;">
+            Desarrollo Humano Integral © 2026
+        </div>
+    </aside>
+
+    <!-- Main Section -->
+    <main>
+        <header>
+            <h3 id="header-title" style="font-size: 1.1rem; color: var(--text-main);">Gestión de Instancias Institucionales</h3>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <img id="header-logo-img" src="" style="height: 30px; display: none; object-fit: contain;">
+                <span style="font-size: 0.85rem; font-weight: bold; color: var(--text-muted);">Coordinación Nacional</span>
+            </div>
+        </header>
+
+        <div class="content-body">
+            
+            <!-- VISTA 1: INSTANCIAS -->
+            <div id="view-instancias" class="view-section active">
+                <div class="card">
+                    <h3>Registro de Instancias y Logotipo Institucional</h3>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">Configure los datos de la oficina y cargue el logotipo oficial que se aplicará en toda la interfaz y reportes.</p>
+                    <form id="form-instancia" onsubmit="event.preventDefault(); procesarRegistroInstancia();">
+                        <div class="form-grid">
+                            <div class="form-group"><label>Nombre de la Instancia / Oficina</label><input type="text" id="instNombre" value="Cáritas de Guatemala, Oficina Nacional" required></div>
+                            <div class="form-group"><label>Director(a) / Responsable</label><input type="text" id="instDirector" value="Lic. Coordinación DHI" required></div>
+                            <div class="form-group"><label>Dirección Física</label><input type="text" id="instDireccion" value="Ciudad de Guatemala"></div>
+                            <div class="form-group"><label>Teléfono</label><input type="text" id="instTelefono" value="+502 0000-0000"></div>
+                            <div class="form-group"><label>Correo Electrónico</label><input type="email" id="instCorreo" value="dhi@caritas.org.gt"></div>
+                            <div class="form-group"><label>Departamento Principal</label><input type="text" id="instDept1" value="Desarrollo Humano Integral"></div>
+                            <div class="form-group"><label>Subunidad / Área</label><input type="text" id="instDept2" value="Equipo Técnico DHI"></div>
+                            <div class="form-group"><label>Logotipo Institucional (Imagen)</label><input type="file" id="instLogoFile" accept="image/*"></div>
+                        </div>
+                        <button type="submit" class="btn-caritas">Guardar Instancia y Aplicar Logo</button>
+                    </form>
+                </div>
+                <div class="card">
+                    <h4>Instancias Registradas</h4>
+                    <div id="tabla-instancias-container" style="margin-top: 10px;"></div>
+                </div>
+            </div>
+
+            <!-- VISTA 2: PROYECTOS -->
+            <div id="view-proyectos" class="view-section">
+                <div class="card">
+                    <h3>Registro General de Proyectos</h3>
+                    <form id="form-proyecto" onsubmit="guardarProyecto(event)">
+                        <div class="form-grid">
+                            <div class="form-group"><label>Nombre del Proyecto</label><input type="text" id="nombreProj" required placeholder="Ej. Seguridad Alimentaria y Medios de Vida"></div>
+                            <div class="form-group"><label>Ejecutor / Equipo</label><input type="text" id="ejecutorProj" value="Equipo Técnico DHI"></div>
+                            <div class="form-group"><label>Duración Estimada</label><input type="text" id="duracionProj" value="12 Meses (2026-2027)"></div>
+                            <div class="form-group"><label>Costo Total (Q.)</label><input type="number" id="costoProj" value="150000"></div>
+                            <div class="form-group"><label>Presupuesto Asignado (Q.)</label><input type="number" id="presupuestoProj" value="150000"></div>
+                            <div class="form-group"><label>Donante / Cooperante</label><input type="text" id="donanteProj" value="Cooperación Internacional"></div>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 15px;"><label>Objetivo General del Proyecto</label><textarea id="objetivoProj" rows="2" required>Contribuir a la seguridad alimentaria y resiliencia comunitaria...</textarea></div>
+                        <button type="submit" class="btn-caritas">Crear Proyecto y Continuar</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- VISTA 3: DEFINICIÓN E INDICADORES -->
+            <div id="view-definicion" class="view-section">
+                <div class="card">
+                    <h3>Definición de Indicadores y Actividades Operativas</h3>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label>Seleccionar Proyecto Activo</label>
+                        <select id="comboProyectosDef" onchange="cargarDatosProyectoDef()"></select>
+                    </div>
+                    
+                    <div id="panel-detalle-proyecto" style="display:none;">
+                        <div style="background: #F9FAFB; padding: 12px; border-radius: 6px; margin-bottom: 15px;">
+                            <h4 id="lbl-nombre-proj" style="color: var(--primary);"></h4>
+                            <p id="lbl-obj-proj" style="font-size: 0.85rem; color: var(--text-muted); margin-top: 5px;"></p>
+                        </div>
+
+                        <h4 style="font-size: 0.95rem; margin-bottom: 10px;">Agregar Actividad a Indicador</h4>
+                        <div class="form-grid">
+                            <div class="form-group"><label>Número de Indicador</label><input type="number" id="numIndicador" value="1" min="1"></div>
+                            <div class="form-group"><label>Descripción del Indicador</label><input type="text" id="descIndicador" placeholder="Ej. Familias capacitadas"></div>
+                            <div class="form-group"><label>Descripción de la Actividad</label><input type="text" id="descActividad" placeholder="Ej. Talleres de huertos"></div>
+                            <div class="form-group"><label>Fecha Inicio</label><input type="date" id="fInicioAct" value="2026-05-01"></div>
+                            <div class="form-group"><label>Fecha Fin</label><input type="date" id="fFinAct" value="2026-06-30"></div>
+                            <div class="form-group"><label>Meta Numérica</label><input type="text" id="metaAct" value="50 Familias"></div>
+                            <div class="form-group"><label>Costo Actividad (Q.)</label><input type="number" id="costoAct" value="12500"></div>
+                            <div class="form-group"><label>Situación / Estado</label>
+                                <select id="situacionAct">
+                                    <option value="A tiempo">A tiempo</option>
+                                    <option value="En riesgo">En riesgo</option>
+                                    <option value="Retrasado">Retrasado</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button class="btn-caritas" onclick="agregarIndicadorActividad()">Registrar Actividad</button>
+
+                        <h4 style="margin-top: 20px; font-size: 0.95rem;">Estructura Actual de Actividades</h4>
+                        <div id="tabla-actividades-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VISTA 4: DASHBOARD -->
+            <div id="view-dashboard" class="view-section">
+                <div class="card">
+                    <h3>Dashboard General de Proyectos</h3>
+                    <div id="dashboard-tarjetas-container" style="display: grid; gap: 15px; margin-top: 15px;"></div>
+                </div>
+            </div>
+
+            <!-- VISTA 5: DIAGRAMA PERT -->
+            <div id="view-pert" class="view-section">
+                <div class="card">
+                    <h3>Diagrama PERT y Ruta Crítica</h3>
+                    <div class="form-group" style="margin-bottom: 15px;">
+                        <label>Seleccionar Proyecto</label>
+                        <select id="comboProyectosPert" onchange="renderizarPert()"></select>
+                    </div>
+                    <div id="pert-grafico-container"></div>
+                </div>
+            </div>
+
+            <!-- VISTA 6: INFORME A4 / PDF -->
+            <div id="view-reporte" class="view-section">
+                <div class="card" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h3>Generación de Informe Técnico Oficial (A4)</h3>
+                    <div style="display: flex; gap: 10px;">
+                        <select id="comboProyectoReporteA4" onchange="generarInformeA4Visual()" style="padding: 8px; border-radius: 4px; border: 1px solid #D1D5DB;"></select>
+                        <button class="btn-caritas" onclick="descargarPDFInforme()">Descargar PDF</button>
+                    </div>
+                </div>
+                <div style="background: #E5E7EB; padding: 20px; overflow-x: auto;">
+                    <div id="informe-a4-contenido" class="a4-page">
+                        <p style="text-align: center; color: #777; margin-top: 100px;">Seleccione un proyecto para visualizar el informe oficial en formato A4.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Scripts de la Aplicación -->
+    <script>
+        let instancias = [];
+        let proyectos = [];
+
+        function cambiarVista(viewId, element) {
+            document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu li').forEach(el => el.classList.remove('active'));
+            
+            document.getElementById(viewId).classList.add('active');
+            if(element) element.classList.add('active');
+
+            const titulos = {
+                'view-instancias': 'Gestión de Instancias Institucionales',
+                'view-proyectos': 'Registro General de Proyectos',
+                'view-definicion': 'Definición de Indicadores y Actividades',
+                'view-dashboard': 'Dashboard General de Proyectos',
+                'view-pert': 'Diagrama PERT y Ruta Crítica',
+                'view-reporte': 'Informe Técnico Oficial (A4)'
+            };
+            document.getElementById('header-title').innerText = titulos[viewId];
+        }
+
+        function procesarRegistroInstancia() {
+            const fileInput = document.getElementById('instLogoFile');
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    registrarInstanciaConLogo(e.target.result);
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            } else {
+                registrarInstanciaConLogo('');
+            }
+        }
+
+        function registrarInstanciaConLogo(logoUrl) {
+            const nuevaInstancia = {
+                id: Date.now(),
+                nombre: document.getElementById('instNombre').value,
+                director: document.getElementById('instDirector').value,
+                direccion: document.getElementById('instDireccion').value,
+                telefono: document.getElementById('instTelefono').value,
+                correo: document.getElementById('instCorreo').value,
+                dept1: document.getElementById('instDept1').value,
+                dept2: document.getElementById('instDept2').value,
+                logo: logoUrl
+            };
+
+            instancias.push(nuevaInstancia);
+            
+            if (logoUrl) {
+                const sidebarLogo = document.getElementById('sidebar-logo-img');
+                const headerLogo = document.getElementById('header-logo-img');
+                
+                sidebarLogo.src = logoUrl;
+                sidebarLogo.style.display = 'block';
+                document.getElementById('sidebar-brand-text').style.display = 'none';
+
+                headerLogo.src = logoUrl;
+                headerLogo.style.display = 'block';
+            }
+
+            renderizarTablaInstancias();
+            document.getElementById('form-instancia').reset();
+            alert("Instancia institucional agregada y logotipo aplicado correctamente.");
+        }
+
+        function renderizarTablaInstancias() {
+            const container = document.getElementById('tabla-instancias-container');
+            if (instancias.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">No hay instancias registradas.</p>';
+                return;
+            }
+
+            let html = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Logotipo</th>
+                            <th>Instancia / Oficina</th>
+                            <th>Director(a)</th>
+                            <th>Ubicación</th>
+                            <th>Contacto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            instancias.forEach(inst => {
+                html += `
+                    <tr>
+                        <td>${inst.logo ? `<img src="${inst.logo}" style="height: 30px; width: 30px; object-fit: contain;">` : 'Sin logo'}</td>
+                        <td><strong>${inst.nombre}</strong><br><small>${inst.dept1} ${inst.dept2 ? '/ ' + inst.dept2 : ''}</small></td>
+                        <td>${inst.director}</td>
+                        <td>${inst.direccion}</td>
+                        <td>${inst.telefono}<br>${inst.correo}</td>
+                    </tr>
+                `;
+            });
+
+            html += `</tbody></table>`;
+            container.innerHTML = html;
+        }
+
+        function guardarProyecto(event) {
+            event.preventDefault();
+            const nuevoProj = {
+                id: proyectos.length + 1,
+                nombre: document.getElementById('nombreProj').value,
+                ejecutor: document.getElementById('ejecutorProj').value,
+                duracion: document.getElementById('duracionProj').value,
+                costo: parseFloat(document.getElementById('costoProj').value),
+                presupuesto: parseFloat(document.getElementById('presupuestoProj').value),
+                donante: document.getElementById('donanteProj').value,
+                objetivo: document.getElementById('objetivoProj').value,
+                indicadores: []
+            };
+
+            proyectos.push(nuevoProj);
+            actualizarSelectoresProyectos();
+            renderizarDashboardVisual();
+            document.getElementById('form-proyecto').reset();
+            alert("Proyecto registrado con éxito. Ahora puede definir sus indicadores y actividades.");
+            cambiarVista('view-definicion', document.querySelector('[data-view="view-definicion"]'));
+        }
+
+        function actualizarSelectoresProyectos() {
+            const selects = ['comboProyectosDef', 'comboProyectosPert', 'comboProyectoReporteA4'];
+            selects.forEach(selectId => {
+                const select = document.getElementById(selectId);
+                select.innerHTML = '<option value="">-- Seleccione un proyecto --</option>';
+                proyectos.forEach(proj => {
+                    const opt = document.createElement('option');
+                    opt.value = proj.id;
+                    opt.textContent = proj.nombre;
+                    select.appendChild(opt);
+                });
+            });
+        }
+
+        function cargarDatosProyectoDef() {
+            const projId = document.getElementById('comboProyectosDef').value;
+            const panel = document.getElementById('panel-detalle-proyecto');
+            
+            if(!projId) {
+                panel.style.display = 'none';
+                return;
+            }
+
+            const proj = proyectos.find(p => p.id == projId);
+            document.getElementById('lbl-nombre-proj').innerText = proj.nombre;
+            document.getElementById('lbl-obj-proj').innerText = proj.objetivo;
+            panel.style.display = 'block';
+            renderizarTablaActividades(proj);
+        }
+
+        function agregarIndicadorActividad() {
+            const projId = document.getElementById('comboProyectosDef').value;
+            if(!projId) return alert("Seleccione un proyecto primero.");
+
+            const proj = proyectos.find(p => p.id == projId);
+            const numInd = parseInt(document.getElementById('numIndicador').value);
+            const descInd = document.getElementById('descIndicador').value;
+
+            let indicador = proj.indicadores.find(i => i.num === numInd);
+            if(!indicador) {
+                indicador = { num: numInd, descripcion: descInd, actividades: [] };
+                proj.indicadores.push(indicador);
+            }
+
+            const nuevaAct = {
+                codigo: `${numInd}.${indicador.actividades.length + 1}`,
+                descripcion: document.getElementById('descActividad').value,
+                inicio: document.getElementById('fInicioAct').value,
+                fin: document.getElementById('fFinAct').value,
+                meta: document.getElementById('metaAct').value,
+                costo: parseFloat(document.getElementById('costoAct').value),
+                situacion: document.getElementById('situacionAct').value
+            };
+
+            indicador.actividades.push(nuevaAct);
+            renderizarTablaActividades(proj);
+            renderizarDashboardVisual();
+            alert("Actividad e indicador agregados correctamente.");
+        }
+
+        function renderizarTablaActividades(proj) {
+            const container = document.getElementById('tabla-actividades-container');
+            if (proj.indicadores.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">No hay indicadores registrados.</p>';
+                return;
+            }
+
+            let html = `
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Ind.</th>
+                            <th>Actividad / Código</th>
+                            <th>Fechas</th>
+                            <th>Meta / Costo</th>
+                            <th>Situación</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            proj.indicadores.forEach(ind => {
+                ind.actividades.forEach(act => {
+                    let pillClass = act.situacion === 'A tiempo' ? 'pill-green' : (act.situacion === 'En riesgo' ? 'pill-yellow' : 'pill-red');
+                    html += `
+                        <tr>
+                            <td><strong>Ind. ${ind.num}</strong><br><small>${ind.descripcion}</small></td>
+                            <td><strong>[${act.codigo}]</strong> ${act.descripcion}</td>
+                            <td>Del ${act.inicio} al ${act.fin}</td>
+                            <td>Meta: ${act.meta}<br>Q. ${act.costo.toFixed(2)}</td>
+                            <td><span class="status-pill ${pillClass}">${act.situacion}</span></td>
+                        </tr>
+                    `;
+                });
+            });
+
+            html += `</tbody></table>`;
+            container.innerHTML = html;
+        }
+
+        function renderizarDashboardVisual() {
+            const container = document.getElementById('dashboard-tarjetas-container');
+            container.innerHTML = '';
+
+            if (proyectos.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); font-size: 0.85rem;">No hay proyectos activos.</p>';
+                return;
+            }
+
+            proyectos.forEach(proj => {
+                let totalActs = 0;
+                proj.indicadores.forEach(i => totalActs += i.actividades.length);
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <h4 style="color: var(--primary);">${proj.nombre}</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 5px 0 10px 0;">Ejecutor: ${proj.ejecutor} | Donante: ${proj.donante}</p>
+                    <div style="display: flex; gap: 20px; font-size: 0.85rem;">
+                        <p><strong>Presupuesto:</strong> Q. ${proj.presupuesto.toLocaleString()}</p>
+                        <p><strong>Duración:</strong> ${proj.duracion}</p>
+                        <p><strong>Indicadores:</strong> ${proj.indicadores.length}</p>
+                        <p><strong>Actividades:</strong> ${totalActs}</p>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderizarPert() {
+            const projId = document.getElementById('comboProyectosPert').value;
+            const container = document.getElementById('pert-grafico-container');
+            
+            if(!projId) {
+                container.innerHTML = '<p style="color: var(--text-muted); font-style: italic;">Seleccione un proyecto para visualizar su diagrama PERT.</p>';
+                return;
+            }
+
+            const proj = proyectos.find(p => p.id == projId);
+            let html = '<div class="pert-container">';
+
+            proj.indicadores.forEach(ind => {
+                ind.actividades.forEach(act => {
+                    html += `
+                        <div class="pert-node">
+                            <h4>Actividad [${act.codigo}]: ${act.descripcion}</h4>
+                            <p style="font-size: 0.85rem; margin-top: 3px;"><strong>Meta:</strong> ${act.meta} | <strong>Costo:</strong> Q. ${act.costo.toFixed(2)}</p>
+                            <div class="pert-details">
+                                <span>📅 Inicio: <strong>${act.inicio}</strong></span>
+                                <span>🏁 Fin: <strong>${act.fin}</strong></span>
+                                <span>⚡ Estado: <strong>${act.situacion}</strong></span>
+                            </div>
+                        </div>
+                    `;
+                });
+            });
+
+            html += '</div>';
+            container.innerHTML = html;
+        }
+
+        function generarInformeA4Visual() {
+            const projId = document.getElementById('comboProyectoReporteA4').value;
+            const container = document.getElementById('informe-a4-contenido');
+
+            if(!projId) {
+                container.innerHTML = '<p style="text-align: center; color: #777; margin-top: 100px;">Seleccione un proyecto para visualizar el informe oficial en formato A4.</p>';
+                return;
+            }
+
+            const proj = proyectos.find(p => p.id == projId);
+            
+            let actividadesRows = '';
+            proj.indicadores.forEach(ind => {
+                ind.actividades.forEach(act => {
+                    actividadesRows += `
+                        <tr>
+                            <td>[${act.codigo}] ${act.descripcion}</td>
+                            <td>${act.inicio} al ${act.fin}</td>
+                            <td>${act.meta}</td>
+                            <td>Q. ${act.costo.toFixed(2)}</td>
+                            <td><span class="status-pill pill-green">${act.situacion}</span></td>
+                        </tr>
+                    `;
+                });
+            });
+
+            container.innerHTML = `
+                <div class="a4-header">
+                    <div>
+                        <h1 style="font-size: 1.2rem; color: var(--primary);">CÁRITAS DE GUATEMALA</h1>
+                        <p style="font-size: 0.8rem; color: #666;">Oficina Nacional - Unidad de Desarrollo Humano Integral (DHI)</p>
+                        <p style="font-size: 0.85rem; font-weight: bold; margin-top: 5px;">Informe Técnico Operativo de Proyecto</p>
+                    </div>
+                </div>
+
+                <div class="report-section-title">1. Datos Generales del Proyecto</div>
+                <div class="indicators-grid-a4">
+                    <div class="indicator-card-a4"><strong>Nombre:</strong> ${proj.nombre}</div>
+                    <div class="indicator-card-a4"><strong>Ejecutor:</strong> ${proj.ejecutor}</div>
+                    <div class="indicator-card-a4"><strong>Donante:</strong> ${proj.donante}</div>
+                    <div class="indicator-card-a4"><strong>Presupuesto:</strong> Q. ${proj.presupuesto.toLocaleString()}</div>
+                </div>
+
+                <div class="report-section-title">2. Objetivo General</div>
+                <p style="font-size: 0.85rem; background: #F9FAFB; padding: 10px; border: 1px solid #E5E7EB; margin-bottom: 15px;">${proj.objetivo}</p>
+
+                <div class="report-section-title">3. Matriz de Actividades e Indicadores</div>
+                <table class="data-table" style="margin-bottom: 20px;">
+                    <thead>
+                        <tr>
+                            <th>Descripción de Actividad</th>
+                            <th>Periodo</th>
+                            <th>Meta</th>
+                            <th>Costo</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${actividadesRows || '<tr><td colspan="5" style="text-align:center;">No hay actividades registradas</td></tr>'}
+                    </tbody>
+                </table>
+
+                <div class="report-section-title">4. Validación Institucional</div>
+                <p style="font-size: 0.75rem; color: #666; margin-top: 20px;">Informe generado automáticamente por el Sistema Integral de Gestión DHI. Válido para revisiones de coordinación.</p>
+            `;
+        }
+
+        function descargarPDFInforme() {
+            const element = document.getElementById('informe-a4-contenido');
+            const projId = document.getElementById('comboProyectoReporteA4').value;
+            
+            if(!projId) {
+                alert("Por favor seleccione un proyecto antes de descargar el informe en PDF.");
+                return;
+            }
+
+            const opt = {
+                margin:       0,
+                filename:     `Informe_Tecnico_DHI_${projId}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2, useCORS: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().from(element).set(opt).save();
+        }
+    </script>
+</body>
+</html>
