@@ -1,18 +1,18 @@
 const express = require('express');
-const sqlite3 = require('sqlite3').verbose();
-const cors = require('cors');
+const path = require('path');
 const app = express();
 
-app.use(express.json());
-app.use(cors());
+// Configurar para servir archivos estáticos desde la raíz
+app.use(express.static(path.join(__dirname)));
 
-// Conexión a la Base de Datos SQLite (Archivo local automático)
-const db = new sqlite3.Database('./caritas_dhi.sqlite', (err) => {
-    if (err) {
-        console.error('Error al abrir la base de datos', err.message);
-    } else {
-        console.log('Base de datos SQLite conectada correctamente.');
-    }
+// Ruta principal que carga el index.html automáticamente
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
 });
 
 // Inicialización de la Estructura de Tablas y Relaciones
