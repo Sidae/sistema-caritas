@@ -162,6 +162,10 @@ app.get('/api/crear-admin-test', (req, res) => {
         res.json({ mensaje: "Usuario administrador creado con éxito. Token: TOK-ADMIN01" });
     });
 });
+const path = require('path');
+
+// Esto le dice al servidor que busque y muestre los archivos estáticos (como el index.html)
+app.use(express.static(path.join(__dirname)));
 app.listen(PORT, () => {
     console.log(`Servidor de Cáritas DHI corriendo en el puerto ${PORT}`);
 });
