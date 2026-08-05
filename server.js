@@ -4,17 +4,14 @@ const { Pool } = require('pg');
 
 const app = express();
 
-// Middleware para procesar JSON y datos de formularios
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Configuración de la conexión a PostgreSQL usando la variable de entorno de Render
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false
 });
 
-// Función para inicializar las tablas automáticamente si no existen
 async function inicializarBaseDatos() {
     try {
         await pool.query(`
@@ -37,21 +34,21 @@ async function inicializarBaseDatos() {
 
 inicializarBaseDatos();
 
-// Servir archivos estáticos desde la raíz del proyecto
 app.use(express.static(path.join(__dirname)));
 
-// Ruta para el inicio de sesión: verifica si ya existe una instancia guardada en la base de datos
+// Ruta de Login adaptada para devolver el estado que el frontend reconoce
 app.post('/api/login', async (req, res) => {
-    const { correo, password } = req.body;
     try {
         const instanciaRes = await pool.query('SELECT * FROM instancias ORDER BY id DESC LIMIT 1');
-        const tieneInstancia = instanciaRes.rows.length > 0;
+        const existeInstancia = instanciaRes.rows.length > 0;
+        const instancia = existeInstancia ? instanciaRes.rows[0] : null;
 
         return res.status(200).json({ 
             success: true, 
-            mensaje: "Login exitoso",
-            instancia: tieneInstancia ? instanciaRes.rows[0] : null,
-            tieneInstancia: tieneInstancia
+            token: "token_valido_caritas",
+            instancia_id: existeInstancia ? instancia.id : null,
+            instancia: instancia,
+            tieneInstancia: existeInstancia
         });
     } catch (err) {
         console.error("Error en login:", err);
@@ -59,12 +56,11 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// Ruta para guardar la instancia en PostgreSQL y activar el sistema de forma permanente
+// Ruta para activar y guardar la instancia en PostgreSQL
 app.post('/api/instancias/activar', async (req, res) => {
     const { nombre, director, direccion, telefono, correo, departamento, subunidad } = req.body;
     
     try {
-        // Limpiamos registros anteriores para mantener una única instancia activa de la oficina
         await pool.query('DELETE FROM instancias');
         
         const query = `
@@ -87,7 +83,7 @@ app.post('/api/instancias/activar', async (req, res) => {
 
         return res.status(200).json({ 
             success: true, 
-            mensaje: "Instancia registrada con éxito en la base de datos",
+            mensaje: "Instancia registrada con éxito",
             instancia_id: nuevaInstancia.id,
             instancia: nuevaInstancia
         });
@@ -97,12 +93,10 @@ app.post('/api/instancias/activar', async (req, res) => {
     }
 });
 
-// Ruta principal para asegurar que cargue el index.html
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Configuración del puerto para Render o entorno local
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor de Cáritas DHI corriendo en el puerto ${PORT}`);
