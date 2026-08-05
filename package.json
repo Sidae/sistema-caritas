@@ -1,6 +1,7 @@
 {
   "name": "sistema-caritas-dhi",
   "version": "1.0.0",
+  "description": "Sistema de Gestion Integral de Proyectos - Caritas Guatemala",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
