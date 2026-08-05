@@ -15,7 +15,7 @@ app.post('/api/login', (req, res) => {
     const { correo, password, token } = req.body;
 
     // Aquí validas las credenciales de tu sistema Cáritas DHI
-    if (correo === "admin@caritas.org.gt" && password === "tu_contraseña") {
+    if (correo === "admin@caritas.org.gt" && password === "6123") {
         return res.status(200).json({ success: true, mensaje: "Login exitoso" });
     } else {
         return res.status(400).json({ error: "Credenciales incorrectas o servidor local no disponible." });
