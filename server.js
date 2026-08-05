@@ -7,8 +7,20 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Servir todos los archivos estáticos desde la raíz del proyecto
+// Servir archivos estáticos desde la raíz del proyecto
 app.use(express.static(path.join(__dirname)));
+
+// Ruta de ejemplo para el inicio de sesión (ajusta la lógica según tu base de datos)
+app.post('/api/login', (req, res) => {
+    const { correo, password, token } = req.body;
+
+    // Aquí validas las credenciales de tu sistema Cáritas DHI
+    if (correo === "admin@caritas.org.gt" && password === "tu_contraseña") {
+        return res.status(200).json({ success: true, mensaje: "Login exitoso" });
+    } else {
+        return res.status(400).json({ error: "Credenciales incorrectas o servidor local no disponible." });
+    }
+});
 
 // Ruta principal para asegurar que cargue el index.html
 app.get('/', (req, res) => {
