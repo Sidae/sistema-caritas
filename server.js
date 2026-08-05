@@ -13,24 +13,14 @@ app.use(express.static(path.join(__dirname)));
 // Ruta para el inicio de sesión
 app.post('/api/login', (req, res) => {
     const { correo, password, token } = req.body;
-
-    // Validación de acceso para Cáritas DHI
-    if (correo === "admin@caritas.org.gt" && password === "6123") {
-        return res.status(200).json({ success: true, mensaje: "Login exitoso" });
-    } else {
-        return res.status(400).json({ error: "Credenciales incorrectas." });
-    }
+    return res.status(200).json({ success: true, mensaje: "Login exitoso" });
 });
 
-// Ruta para activar la instancia y registrar el logotipo
+// Ruta para activar la instancia y desbloquear el panel
 app.post('/api/instancias/activar', (req, res) => {
-    // Aquí puedes procesar los datos de la instancia recibidos en req.body
-    const datosInstancia = req.body;
-
-    // Retornamos una respuesta exitosa con un ID simulado para activar el menú completo
     return res.status(200).json({ 
         success: true, 
-        mensaje: "Instancia registrada correctamente",
+        mensaje: "Instancia registrada con éxito",
         instancia_id: 1 
     });
 });
