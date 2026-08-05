@@ -1,10 +1,13 @@
 {
+  "name": "sistema-caritas-dhi",
+  "version": "1.0.0",
+  "description": "Sistema de Gestion Integral de Proyectos",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
-    "cors": "^2.8.6",
-    "express": "^5.2.1",
-    "nodemailer": "^9.0.4"
-  "express": "^4.18.2",
-  "pg": "^8.11.3"
-}
+    "express": "^4.18.2",
+    "pg": "^8.11.3"
   }
 }
