@@ -28,23 +28,8 @@ async function inicializarBaseDatos() {
                 departamento VARCHAR(255),
                 subunidad VARCHAR(255)
             );
-
-            CREATE TABLE IF NOT EXISTS usuarios (
-                id SERIAL PRIMARY KEY,
-                correo VARCHAR(255) UNIQUE NOT NULL,
-                password VARCHAR(255) NOT NULL,
-                token VARCHAR(100),
-                rol VARCHAR(50) DEFAULT 'admin'
-            );
-
-            CREATE TABLE IF NOT EXISTS proyectos (
-                id SERIAL PRIMARY KEY,
-                nombre_proyecto VARCHAR(255) NOT NULL,
-                descripcion TEXT,
-                instancia_id INT REFERENCES instancias(id)
-            );
         `);
-        console.log("Tablas verificadas y creadas correctamente en PostgreSQL.");
+        console.log("Tabla instancias verificada correctamente en PostgreSQL.");
     } catch (err) {
         console.error("Error al inicializar la base de datos:", err);
     }
@@ -55,12 +40,11 @@ inicializarBaseDatos();
 // Servir archivos estáticos desde la raíz del proyecto
 app.use(express.static(path.join(__dirname)));
 
-// Ruta para el inicio de sesión conectado a SQL
+// Ruta para el inicio de sesión: verifica si ya existe una instancia guardada en la base de datos
 app.post('/api/login', async (req, res) => {
     const { correo, password } = req.body;
     try {
-        // Consultar si hay una instancia registrada en la base de datos
-        const instanciaRes = await pool.query('SELECT * FROM instancias LIMIT 1');
+        const instanciaRes = await pool.query('SELECT * FROM instancias ORDER BY id DESC LIMIT 1');
         const tieneInstancia = instanciaRes.rows.length > 0;
 
         return res.status(200).json({ 
@@ -75,12 +59,12 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// Ruta para guardar la instancia en SQL y activar el sistema
+// Ruta para guardar la instancia en PostgreSQL y activar el sistema de forma permanente
 app.post('/api/instancias/activar', async (req, res) => {
     const { nombre, director, direccion, telefono, correo, departamento, subunidad } = req.body;
     
     try {
-        // Limpiamos la tabla anterior o actualizamos para mantener una única instancia oficial de la oficina
+        // Limpiamos registros anteriores para mantener una única instancia activa de la oficina
         await pool.query('DELETE FROM instancias');
         
         const query = `
@@ -89,7 +73,7 @@ app.post('/api/instancias/activar', async (req, res) => {
             RETURNING *;
         `;
         const values = [
-            nombre || "Oficina Nacional", 
+            nombre || req.body.nombreInstancia || "Oficina Nacional", 
             director || "", 
             direccion || "", 
             telefono || "", 
