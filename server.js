@@ -10,16 +10,29 @@ app.use(express.urlencoded({ extended: true }));
 // Servir archivos estáticos desde la raíz del proyecto
 app.use(express.static(path.join(__dirname)));
 
-// Ruta de ejemplo para el inicio de sesión (ajusta la lógica según tu base de datos)
+// Ruta para el inicio de sesión
 app.post('/api/login', (req, res) => {
     const { correo, password, token } = req.body;
 
-    // Aquí validas las credenciales de tu sistema Cáritas DHI
-    if (correo === "admin@caritas.org.gt" && password === "6123") {
+    // Validación de acceso para Cáritas DHI
+    if (correo === "admin@caritas.org.gt" && password === "tu_contraseña") {
         return res.status(200).json({ success: true, mensaje: "Login exitoso" });
     } else {
-        return res.status(400).json({ error: "Credenciales incorrectas o servidor local no disponible." });
+        return res.status(400).json({ error: "Credenciales incorrectas." });
     }
+});
+
+// Ruta para activar la instancia y registrar el logotipo
+app.post('/api/instancias/activar', (req, res) => {
+    // Aquí puedes procesar los datos de la instancia recibidos en req.body
+    const datosInstancia = req.body;
+
+    // Retornamos una respuesta exitosa con un ID simulado para activar el menú completo
+    return res.status(200).json({ 
+        success: true, 
+        mensaje: "Instancia registrada correctamente",
+        instancia_id: 1 
+    });
 });
 
 // Ruta principal para asegurar que cargue el index.html
