@@ -188,29 +188,127 @@
 
                 <!-- 2. CAPTURA DE CAMPO -->
                 <div id="tab-campo" class="tab-content hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
-                        <h3 class="text-lg font-bold text-gray-800">Captura de Datos de Campo</h3>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
+                        <div class="flex items-center justify-between border-b pb-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">Captura de Datos de Campo (KoboToolbox / Móvil)</h3>
+                                <p class="text-xs text-gray-500">Registro de formularios y encuestas comunitarias en tiempo real.</p>
+                            </div>
+                            <button class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm">
+                                <i class="fa-solid fa-plus mr-1"></i> Nueva Ficha de Campo
+                            </button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-sm">
+                                <thead>
+                                    <tr class="bg-gray-100 text-gray-600 text-xs uppercase font-semibold">
+                                        <th class="p-3">ID Registro</th>
+                                        <th class="p-3">Comunidad / Municipio</th>
+                                        <th class="p-3">Encuestador</th>
+                                        <th class="p-3">Fecha</th>
+                                        <th class="p-3">Estatus Sincronización</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200 text-gray-700">
+                                    <tr>
+                                        <td class="p-3 font-semibold">#FC-1092</td>
+                                        <td class="p-3">Aldea El Jícaro, Cubulco</td>
+                                        <td class="p-3">Mario López</td>
+                                        <td class="p-3">17/08/2026</td>
+                                        <td class="p-3"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-xs font-bold">Sincronizado</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-semibold">#FC-1093</td>
+                                        <td class="p-3">Caserío Los Pinos, Joyabaj</td>
+                                        <td class="p-3">Ana Gómez</td>
+                                        <td class="p-3">16/08/2026</td>
+                                        <td class="p-3"><span class="bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded text-xs font-bold">Sincronizado</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 <!-- 3. MÓDULO OPERATIVO -->
                 <div id="tab-operativo" class="tab-content hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                        <h3 class="text-lg font-bold text-gray-800">Control Financiero y Comprobantes</h3>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
+                        <div class="flex items-center justify-between border-b pb-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">Control Financiero y Comprobantes</h3>
+                                <p class="text-xs text-gray-500">Gestión de gastos, facturación y partidas presupuestarias.</p>
+                            </div>
+                            <button class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm">
+                                <i class="fa-solid fa-receipt mr-1"></i> Registrar Gasto
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-gray-50 border p-4 rounded-lg">
+                                <span class="text-xs text-gray-500 font-semibold uppercase">Techo Presupuestario</span>
+                                <h4 class="text-xl font-bold text-gray-800 mt-1">Q 580,000.00</h4>
+                            </div>
+                            <div class="bg-gray-50 border p-4 rounded-lg">
+                                <span class="text-xs text-gray-500 font-semibold uppercase">Ejecutado Acumulado</span>
+                                <h4 class="text-xl font-bold text-blue-600 mt-1">Q 450,200.00</h4>
+                            </div>
+                            <div class="bg-gray-50 border p-4 rounded-lg">
+                                <span class="text-xs text-gray-500 font-semibold uppercase">Disponible</span>
+                                <h4 class="text-xl font-bold text-emerald-600 mt-1">Q 129,800.00</h4>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- 4. MATRIZ DE INDICADORES -->
                 <div id="tab-indicadores" class="tab-content hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                        <h3 class="text-lg font-bold text-gray-800">Matriz de Indicadores</h3>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
+                        <div class="border-b pb-4">
+                            <h3 class="text-lg font-bold text-gray-800">Matriz de Indicadores (Marco Lógico)</h3>
+                            <p class="text-xs text-gray-500">Listado general de indicadores de impacto, resultado y producto.</p>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse text-sm">
+                                <thead>
+                                    <tr class="bg-gray-100 text-gray-600 text-xs uppercase font-semibold">
+                                        <th class="p-3">Indicador</th>
+                                        <th class="p-3">Línea Base</th>
+                                        <th class="p-3">Meta Anual</th>
+                                        <th class="p-3">Avance Actual</th>
+                                        <th class="p-3">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200 text-gray-700">
+                                    <tr>
+                                        <td class="p-3 font-medium">Porcentaje de familias con seguridad alimentaria</td>
+                                        <td class="p-3">15%</td>
+                                        <td class="p-3">60%</td>
+                                        <td class="p-3 font-bold text-brand-700">54%</td>
+                                        <td class="p-3"><span class="bg-green-100 text-green-800 px-2 py-0.5 rounded text-xs">Óptimo</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-medium">Hectáreas reforestadas en cuencas altas</td>
+                                        <td class="p-3">0 ha</td>
+                                        <td class="p-3">120 ha</td>
+                                        <td class="p-3 font-bold text-brand-700">85 ha</td>
+                                        <td class="p-3"><span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-xs">Atención</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
                 <!-- 5. CRONOGRAMA Y AVANCE -->
                 <div id="tab-cronograma" class="tab-content hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                        <h3 class="text-lg font-bold text-gray-800">Cronograma de Ejecución</h3>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
+                        <div class="border-b pb-4">
+                            <h3 class="text-lg font-bold text-gray-800">Cronograma General de Actividades (Diagrama de Gantt)</h3>
+                            <p class="text-xs text-gray-500">Seguimiento temporal de fases y entregables del proyecto.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg border text-center text-sm text-gray-600">
+                            <i class="fa-solid fa-calendar-alt text-brand-600 text-2xl mb-2"></i>
+                            <p class="font-semibold">Cronograma sincronizado con hitos trimestrales activos.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -256,7 +354,7 @@
                             </div>
                             <div class="text-right text-xs text-gray-500">
                                 <p><span class="font-semibold text-gray-700">Generado por:</span> José Raúl Martínez</p>
-                                <p><span class="font-semibold text-gray-700">Fecha y Hora:</span> <span id="report-timestamp">17/08/2026 14:52</span></p>
+                                <p><span class="font-semibold text-gray-700">Fecha y Hora:</span> <span id="report-timestamp">17/08/2026 15:00</span></p>
                             </div>
                         </div>
 
@@ -310,15 +408,29 @@
 
                 <!-- 7. GESTIÓN DE USUARIOS -->
                 <div id="tab-usuarios" class="tab-content hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                        <h3 class="text-lg font-bold text-gray-800">Gestión de Usuarios</h3>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
+                        <div class="border-b pb-4">
+                            <h3 class="text-lg font-bold text-gray-800">Gestión de Usuarios y Permisos</h3>
+                            <p class="text-xs text-gray-500">Control de accesos y roles institucionales en ALISOFT.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg border text-sm text-gray-700">
+                            <p><strong>Usuario Activo:</strong> José Raúl Martínez (MASTER)</p>
+                            <p><strong>Permisos Asignados:</strong> Acceso total a módulos de supervisión, reportes y configuración.</p>
+                        </div>
                     </div>
                 </div>
 
                 <!-- 8. CONFIGURACIÓN INSTANCIA -->
                 <div id="tab-configuracion" class="tab-content hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                        <h3 class="text-lg font-bold text-gray-800">Configuración de la Instancia</h3>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
+                        <div class="border-b pb-4">
+                            <h3 class="text-lg font-bold text-gray-800">Configuración de la Instancia ALISOFT</h3>
+                            <p class="text-xs text-gray-500">Parámetros generales del sistema de Monitoreo y Evaluación.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-lg border text-sm text-gray-700">
+                            <p><strong>Versión del Sistema:</strong> 3.2.0 (Producción)</p>
+                            <p><strong>Base de Datos:</strong> Conectada y sincronizada (SQLite / PostgreSQL)</p>
+                        </div>
                     </div>
                 </div>
 
@@ -438,7 +550,7 @@
             doc.setFontSize(9);
             doc.setTextColor(107, 114, 128);
             doc.text("Generado por: José Raúl Martínez", 196, 15, { align: "right" });
-            doc.text("Fecha y Hora: 17/08/2026 14:52", 196, 20, { align: "right" });
+            doc.text("Fecha y Hora: 17/08/2026 15:00", 196, 20, { align: "right" });
 
             // Línea separadora
             doc.setDrawColor(209, 213, 219);
