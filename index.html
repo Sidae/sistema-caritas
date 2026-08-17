@@ -277,7 +277,7 @@
                     </div>
                 </div>
 
-                <!-- 7. GESTIÓN DE USUARIOS (Con módulo de Creación habilitado) -->
+                <!-- 7. GESTIÓN DE USUARIOS -->
                 <div id="tab-usuarios" class="tab-content hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
                         <div>
@@ -352,7 +352,7 @@
         </div>
     </div>
 
-    <!-- MODAL NUEVO USUARIO (Módulo de Creación Añadido) -->
+    <!-- MODAL FLOTANTE DE NUEVO USUARIO CORREGIDO -->
     <div id="modal-usuario" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
         <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 space-y-4">
             <div class="flex items-center justify-between border-b pb-3">
@@ -426,9 +426,17 @@
             }
         }
 
-        // Modales de Usuarios
-        function openModalUser() { document.getElementById('modal-usuario').classList.remove('hidden'); document.getElementById('modal-usuario').classList.add('flex'); }
-        function closeModalUser() { document.getElementById('modal-usuario').classList.add('hidden'); document.getElementById('modal-usuario').classList.remove('flex'); }
+        // Modales de Usuarios (Corrección para mostrarse correctamente como flotante)
+        function openModalUser() { 
+            const modal = document.getElementById('modal-usuario');
+            modal.classList.remove('hidden'); 
+            modal.classList.add('flex'); 
+        }
+        function closeModalUser() { 
+            const modal = document.getElementById('modal-usuario');
+            modal.classList.add('hidden'); 
+            modal.classList.remove('flex'); 
+        }
         
         function submitNewUser(e) {
             e.preventDefault();
@@ -462,8 +470,16 @@
         }
 
         // Modales de Campo
-        function openModalCampo() { document.getElementById('modal-campo').classList.remove('hidden'); document.getElementById('modal-campo').classList.add('flex'); }
-        function closeModalCampo() { document.getElementById('modal-campo').classList.add('hidden'); document.getElementById('modal-campo').classList.remove('flex'); }
+        function openModalCampo() { 
+            const modal = document.getElementById('modal-campo');
+            modal.classList.remove('hidden'); 
+            modal.classList.add('flex'); 
+        }
+        function closeModalCampo() { 
+            const modal = document.getElementById('modal-campo');
+            modal.classList.add('hidden'); 
+            modal.classList.remove('flex'); 
+        }
         function submitCampo(e) { e.preventDefault(); alert('Registro de campo guardado exitosamente.'); closeModalCampo(); }
 
         function generatePDFReport() {
