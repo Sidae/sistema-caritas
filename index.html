@@ -10,9 +10,10 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- FontAwesome para Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- jsPDF para exportación -->
+    <!-- jsPDF y html2canvas para exportación con gráficos -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -423,7 +424,7 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-gray-200 text-sm">
                             <div>
                                 <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Proyecto</label>
-                                id="filtro-proyecto" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500">
+                                <select id="filtro-proyecto" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500">
                                     <option value="todos">Todos los Proyectos</option>
                                     <option value="p1">Seguridad Alimentaria Corredor Seco</option>
                                     <option value="p2">Gestión de Riesgo Comunitario</option>
@@ -810,11 +811,10 @@
         }
         function submitCampo(e) { 
             e.preventDefault(); 
-            alert('Registro de campo guardado exitosamente.'); 
             closeModalCampo(); 
         }
         function verDetalleCampo(id) { 
-            alert('Abriendo detalle completo del registro de campo No. ' + id); 
+            // Visualización directa sin alertas
         }
 
         // Modales Gasto
@@ -830,7 +830,6 @@
         }
         function submitGasto(e) {
             e.preventDefault();
-            alert('Comprobante de gasto registrado exitosamente.');
             closeModalGasto();
         }
 
@@ -847,7 +846,6 @@
         }
         function submitUser(e) {
             e.preventDefault();
-            alert('Usuario registrado exitosamente.');
             closeModalUser();
         }
 
@@ -864,7 +862,6 @@
         }
         function submitIndicador(e) {
             e.preventDefault();
-            alert('Indicador creado exitosamente.');
             closeModalIndicador();
         }
 
@@ -875,7 +872,6 @@
             const code = document.getElementById('config-inst-code').value;
             document.getElementById('sidebar-inst-name').innerText = name;
             document.getElementById('sidebar-logo-text').innerText = code;
-            alert('Configuración de instancia actualizada correctamente.');
         }
 
         // Función para Generar la Vista de Reportes tipo Power BI
@@ -883,11 +879,9 @@
             const container = document.getElementById('dashboard-dinamico-container');
             container.classList.remove('hidden');
 
-            // Renderizar gráficos del reporte si no existen
             const ctxBar = document.getElementById('chartReporteBar').getContext('2d');
             const ctxPie = document.getElementById('chartReportePie').getContext('2d');
 
-            // Destruir gráficos anteriores si existen para evitar conflictos
             if(window.myReportBar) window.myReportBar.destroy();
             if(window.myReportPie) window.myReportPie.destroy();
 
@@ -915,31 +909,51 @@
                 },
                 options: { responsive: true, maintainAspectRatio: false }
             });
-
-            alert('Vista de reportes generada con éxito según los filtros seleccionados.');
         }
 
-        // Exportar Reporte PDF con jsPDF
-        function generatePDFReport() {
+        // Exportar Reporte PDF incluyendo el Dashboard visualizado mediante html2canvas
+        async function generatePDFReport() {
             const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
+            const doc = new jsPDF('p', 'mm', 'a4');
+            
             doc.setFont("helvetica", "bold");
-            doc.setFontSize(18);
-            doc.text("ALISOFT - INFORME EJECUTIVO INSTITUCIONAL", 14, 20);
-            doc.setFontSize(10);
+            doc.setFontSize(16);
+            doc.text("ALISOFT - INFORME EJECUTIVO INSTITUCIONAL", 14, 15);
+            doc.setFontSize(9);
             doc.setFont("helvetica", "normal");
-            doc.text("Fecha de generación: 17/08/2026", 14, 28);
-            doc.text("Instancia: Sistema Central ALISOFT", 14, 34);
+            doc.text("Fecha de generación: 17/08/2026 | Instancia: Sistema Central ALISOFT", 14, 21);
 
-            doc.autoTable({
-                startY: 42,
-                head: [['Indicador / Componente', 'Meta Anual', 'Ejecutado', 'Estatus']],
-                body: [
-                    ['Familias con seguridad alimentaria', '500', '420', '84% (En curso)'],
-                    ['Hectáreas reforestadas', '80', '65', '81% (En curso)'],
-                    ['Talleres de capacitación técnica', '24', '22', '91% (Óptimo)']
-                ],
-            });
+            const dashboardContainer = document.getElementById('dashboard-dinamico-container');
+            const wasHidden = dashboardContainer.classList.contains('hidden');
+            
+            // Si el dashboard no estaba generado en pantalla, lo mostramos temporalmente para capturarlo
+            if (wasHidden) {
+                generarVistaReporte();
+            }
+
+            // Capturar el contenedor del dashboard con html2canvas
+            const canvas = await html2canvas(dashboardContainer, { scale: 2, useCORS: true });
+            const imgData = canvas.toDataURL('image/png');
+            
+            if (wasHidden) {
+                dashboardContainer.classList.add('hidden');
+            }
+
+            const imgWidth = 182;
+            const pageHeight = 295;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+            let heightLeft = imgHeight;
+            let position = 28;
+
+            doc.addImage(imgData, 'PNG', 14, position, imgWidth, imgHeight);
+            heightLeft -= (pageHeight - position);
+
+            while (heightLeft >= 0) {
+                position = heightLeft - imgHeight;
+                doc.addPage();
+                doc.addImage(imgData, 'PNG', 14, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+            }
 
             doc.save("Informe_Ejecutivo_ALISOFT.pdf");
         }
