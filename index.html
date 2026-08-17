@@ -39,12 +39,12 @@
         <!-- Sidebar -->
         <aside class="w-64 bg-brand-900 text-white flex flex-col transition-all duration-300 shadow-xl z-20">
             <div class="p-5 flex items-center space-x-3 border-b border-brand-800">
-                <div id="sidebar-logo-container" class="w-10 h-10 rounded-lg bg-brand-700 flex items-center justify-center font-bold text-xl overflow-hidden shadow-inner">
-                    <span id="sidebar-logo-text">AI</span>
+                <div class="w-10 h-10 rounded-lg bg-brand-700 flex items-center justify-center font-bold text-xl overflow-hidden shadow-inner">
+                    <span>AI</span>
                 </div>
                 <div>
                     <h1 class="font-bold text-lg leading-tight tracking-wide">ALISOFT</h1>
-                    <p class="text-xs text-brand-300" id="sidebar-inst-name">Sistema M&E</p>
+                    <p class="text-xs text-brand-300">Sistema M&E</p>
                 </div>
             </div>
 
@@ -85,10 +85,10 @@
 
             <div class="p-4 border-t border-brand-800 text-xs text-brand-300">
                 <div class="flex items-center justify-between mb-1">
-                    <span class="font-semibold text-white" id="user-display-name">MASTER Admin</span>
-                    <span class="bg-amber-500 text-gray-900 px-1.5 py-0.5 rounded text-[10px] font-bold" id="user-display-role">MASTER</span>
+                    <span class="font-semibold text-white" id="user-display-name">José Raúl Martínez</span>
+                    <span class="bg-amber-500 text-gray-900 px-1.5 py-0.5 rounded text-[10px] font-bold">MASTER</span>
                 </div>
-                <p class="truncate" id="user-display-inst">Instancia Central ALISOFT</p>
+                <p class="truncate">Instancia Central ALISOFT</p>
             </div>
         </aside>
 
@@ -103,14 +103,14 @@
                     <div class="flex items-center space-x-2 bg-gray-50 border border-gray-200 rounded-lg px-3 py-1.5">
                         <i class="fa-solid fa-project-diagram text-brand-600 text-sm"></i>
                         <span class="text-xs font-semibold text-gray-500">Proyecto Activo:</span>
-                        <select id="global-project-select" onchange="changeGlobalProject(this.value)" class="text-sm font-bold text-gray-800 bg-transparent focus:outline-none cursor-pointer">
-                            <option value="p1">PROYECTO: Seguridad Alimentaria Corredor Seco</option>
-                            <option value="p2">PROYECTO: Gestión de Riesgo Comunitario</option>
+                        <select id="global-project-select" onchange="updateProjectContext()" class="text-sm font-bold text-gray-800 bg-transparent focus:outline-none cursor-pointer">
+                            <option value="Seguridad Alimentaria Corredor Seco">PROYECTO: Seguridad Alimentaria Corredor Seco</option>
+                            <option value="Gestión de Riesgo Comunitario">PROYECTO: Gestión de Riesgo Comunitario</option>
                         </select>
                     </div>
                     <div class="relative">
                         <div class="w-9 h-9 rounded-full bg-brand-100 border border-brand-300 flex items-center justify-center text-brand-800 font-bold text-sm shadow-sm">
-                            <span id="header-user-initials">MA</span>
+                            <span>JR</span>
                         </div>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
                         <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
                             <div>
                                 <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Avance Físico Global</p>
-                                <h3 class="text-2xl font-black text-gray-800 mt-1" id="dash-avance-fisico">78.5%</h3>
+                                <h3 class="text-2xl font-black text-gray-800 mt-1">78.5%</h3>
                                 <p class="text-xs text-brand-600 font-medium mt-1"><i class="fa-solid fa-arrow-up"></i> +4.2% este mes</p>
                             </div>
                             <div class="w-12 h-12 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center text-xl shadow-inner">
@@ -135,7 +135,7 @@
                         <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
                             <div>
                                 <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Presupuesto Ejecutado</p>
-                                <h3 class="text-2xl font-black text-gray-800 mt-1" id="dash-presupuesto">Q 450,200</h3>
+                                <h3 class="text-2xl font-black text-gray-800 mt-1">Q 450,200</h3>
                                 <p class="text-xs text-gray-500 font-medium mt-1">Meta: Q 580,000</p>
                             </div>
                             <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl shadow-inner">
@@ -155,7 +155,7 @@
                         <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
                             <div>
                                 <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Estatus Predictivo IA</p>
-                                <h3 class="text-lg font-black text-brand-700 mt-1" id="dash-ia-status">EN TIEMPO</h3>
+                                <h3 class="text-lg font-black text-brand-700 mt-1">EN TIEMPO</h3>
                                 <p class="text-xs text-gray-500 font-medium mt-1">Confiabilidad: 94%</p>
                             </div>
                             <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl shadow-inner">
@@ -188,163 +188,137 @@
 
                 <!-- 2. CAPTURA DE CAMPO -->
                 <div id="tab-campo" class="tab-content hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-800">Registro de Datos de Campo en Tiempo Real</h3>
-                            <p class="text-xs text-gray-500 mt-1">Capture visitas, beneficiarios atendidos, entregas de insumos e incidencias territoriales.</p>
-                        </div>
-                        <button onclick="openModalCampo()" class="bg-brand-600 hover:bg-brand-700 text-white font-medium px-4 py-2 rounded-lg text-sm flex items-center space-x-2 shadow-sm transition-colors self-start md:self-auto">
-                            <i class="fa-solid fa-plus"></i>
-                            <span>Nuevo Registro de Campo</span>
-                        </button>
-                    </div>
-
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
-                            <span class="text-sm font-bold text-gray-700">Bitácora de Visitas y Entregas Recientes</span>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse text-sm">
-                                <thead>
-                                    <tr class="bg-gray-100 text-gray-600 text-xs uppercase tracking-wider font-semibold border-b border-gray-200">
-                                        <th class="p-4">Fecha</th>
-                                        <th class="p-4">Comunidad / Municipio</th>
-                                        <th class="p-4">Componente / Actividad</th>
-                                        <th class="p-4">Beneficiarios</th>
-                                        <th class="p-4">Técnico Responsable</th>
-                                        <th class="p-4">Estado</th>
-                                        <th class="p-4 text-center">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200 text-gray-700">
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="p-4 text-xs font-medium">14/08/2026</td>
-                                        <td class="p-4 font-semibold text-gray-800">Aldea El Jícaro, Zacapa</td>
-                                        <td class="p-4">Entrega de Abono Orgánico y Semillas</td>
-                                        <td class="p-4">45 Familias</td>
-                                        <td class="p-4 text-xs">Carlos Mendoza (Técnico)</td>
-                                        <td class="p-4"><span class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Validado</span></td>
-                                        <td class="p-4 text-center">
-                                            <button onclick="verDetalleCampo(1)" class="text-brand-600 hover:text-brand-800 p-1"><i class="fa-solid fa-eye"></i></button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
+                        <h3 class="text-lg font-bold text-gray-800">Captura de Datos de Campo</h3>
                     </div>
                 </div>
 
                 <!-- 3. MÓDULO OPERATIVO -->
                 <div id="tab-operativo" class="tab-content hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                            <div>
-                                <h3 class="text-lg font-bold text-gray-800">Control Financiero y Comprobantes</h3>
-                                <p class="text-xs text-gray-500 mt-1">Gestión de gastos operativos, liquidaciones y carga de facturas digitales.</p>
-                            </div>
-                        </div>
+                        <h3 class="text-lg font-bold text-gray-800">Control Financiero y Comprobantes</h3>
                     </div>
                 </div>
 
                 <!-- 4. MATRIZ DE INDICADORES -->
                 <div id="tab-indicadores" class="tab-content hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-800">Matriz de Indicadores del Proyecto</h3>
-                            <p class="text-xs text-gray-500 mt-1">Definición de metas, líneas base y frecuencias de medición.</p>
-                        </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                        <h3 class="text-lg font-bold text-gray-800">Matriz de Indicadores</h3>
                     </div>
                 </div>
 
                 <!-- 5. CRONOGRAMA Y AVANCE -->
                 <div id="tab-cronograma" class="tab-content hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                        <h3 class="text-lg font-bold text-gray-800 mb-2">Cronograma de Ejecución y Fases del Proyecto</h3>
+                        <h3 class="text-lg font-bold text-gray-800">Cronograma de Ejecución</h3>
                     </div>
                 </div>
 
-                <!-- 6. CENTRO DE REPORTES -->
+                <!-- 6. CENTRO DE REPORTES (TIPO POWER BI & FILTROS AVANZADOS) -->
                 <div id="tab-reportes" class="tab-content hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-800">Generación de Reportes Institucionales PDF</h3>
-                            <p class="text-xs text-gray-500 mt-1">Exportación consolidada de indicadores, bitácoras de campo y ejecución presupuestaria.</p>
+                    <!-- Panel de Controles y Filtros -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 flex-1">
+                            <div>
+                                <label class="block text-xs font-bold text-gray-600 uppercase mb-1">Criterio de Reporte</label>
+                                <select id="report-filter-type" onchange="toggleReportFilterOptions()" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white font-medium focus:outline-none focus:border-brand-500">
+                                    <option value="proyecto">Por Proyecto Completo</option>
+                                    <option value="indicador">Por Indicador Específico</option>
+                                    <option value="actividad">Por Actividad</option>
+                                </select>
+                            </div>
+                            <div id="dynamic-filter-container">
+                                <label id="dynamic-label" class="block text-xs font-bold text-gray-600 uppercase mb-1">Seleccionar Indicador</label>
+                                <select id="report-sub-filter" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm bg-white font-medium focus:outline-none focus:border-brand-500">
+                                    <!-- Opciones cargadas dinámicamente -->
+                                </select>
+                            </div>
                         </div>
-                        <button onclick="generatePDFReport()" class="bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-lg text-sm flex items-center space-x-2 shadow-sm transition-colors">
-                            <i class="fa-solid fa-file-pdf"></i>
-                            <span>Descargar Informe Ejecutivo PDF</span>
-                        </button>
+                        <div class="flex items-center space-x-3">
+                            <button onclick="applyReportFilter()" class="bg-brand-700 hover:bg-brand-800 text-white font-medium px-4 py-2 rounded-lg text-sm flex items-center space-x-2 shadow-sm transition-colors">
+                                <i class="fa-solid fa-filter"></i>
+                                <span>Generar Vista</span>
+                            </button>
+                            <button onclick="generatePDFReport()" class="bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-lg text-sm flex items-center space-x-2 shadow-sm transition-colors">
+                                <i class="fa-solid fa-file-pdf"></i>
+                                <span>Exportar PDF</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- DASHBOARD TIPO POWER BI (Vista Previa en Pantalla) -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-6">
+                        <!-- Cabecera simulada del reporte en pantalla -->
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b pb-4 gap-2">
+                            <div>
+                                <span class="text-xs font-black tracking-widest text-brand-700 uppercase">ALISOFT</span>
+                                <h3 id="report-view-title" class="text-xl font-bold text-gray-900 mt-0.5">Resumen Proyecto Seguridad Alimentaria Corredor Seco</h3>
+                            </div>
+                            <div class="text-right text-xs text-gray-500">
+                                <p><span class="font-semibold text-gray-700">Generado por:</span> José Raúl Martínez</p>
+                                <p><span class="font-semibold text-gray-700">Fecha y Hora:</span> <span id="report-timestamp">17/08/2026 14:52</span></p>
+                            </div>
+                        </div>
+
+                        <!-- Tarjeta de Análisis e Insights Inteligentes -->
+                        <div class="bg-brand-50 border-l-4 border-brand-600 p-4 rounded-r-lg space-y-2">
+                            <div class="flex items-center space-x-2 text-brand-900 font-bold text-sm">
+                                <i class="fa-solid fa-chart-line"></i>
+                                <span>Análisis Ejecutivo e Insights de Estatus</span>
+                            </div>
+                            <p id="report-insight-text" class="text-xs text-brand-900 leading-relaxed">
+                                El proyecto avanza de manera favorable cumpliendo el 78.5% de su meta física anual. No obstante, se detectó una desviación menor en la distribución de insumos orgánicos en el Corredor Seco. Se recomienda poner especial atención al indicador de cobertura en comunidades vulnerables del norte para evitar cuellos de botella en el próximo cierre trimestral.
+                            </p>
+                        </div>
+
+                        <!-- Tarjetas de Métricas Clave (KPI Cards Power BI style) -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                                <p class="text-xs font-semibold text-gray-500 uppercase">Cumplimiento Global</p>
+                                <h4 class="text-2xl font-black text-gray-800 mt-1">84.2%</h4>
+                                <span class="text-[11px] text-emerald-600 font-medium">Meta óptima alcanzada</span>
+                            </div>
+                            <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                                <p class="text-xs font-semibold text-gray-500 uppercase">Presupuesto Ejecutado</p>
+                                <h4 class="text-2xl font-black text-gray-800 mt-1">Q 450,200</h4>
+                                <span class="text-[11px] text-blue-600 font-medium">77.6% del techo financiero</span>
+                            </div>
+                            <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg">
+                                <p class="text-xs font-semibold text-gray-500 uppercase">Alertas Activas</p>
+                                <h4 class="text-2xl font-black text-amber-600 mt-1">2 Alertas</h4>
+                                <span class="text-[11px] text-amber-700 font-medium">Requieren supervisión</span>
+                            </div>
+                        </div>
+
+                        <!-- Gráficas del Dashboard Power BI -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 pt-2">
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <h4 class="text-sm font-bold text-gray-700 mb-3">Comportamiento Histórico de Avance</h4>
+                                <div class="h-64">
+                                    <canvas id="reportChartPowerBI1"></canvas>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                <h4 class="text-sm font-bold text-gray-700 mb-3">Distribución por Componentes / Metas</h4>
+                                <div class="h-64">
+                                    <canvas id="reportChartPowerBI2"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- 7. GESTIÓN DE USUARIOS -->
                 <div id="tab-usuarios" class="tab-content hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-800">Directorio de Usuarios y Jerarquía de Roles</h3>
-                            <p class="text-xs text-gray-500 mt-1">Control de accesos para MASTER, Gerente, Director, Coordinador y Técnico.</p>
-                        </div>
-                        <button onclick="openModalUser()" class="bg-brand-600 hover:bg-brand-700 text-white font-medium px-4 py-2 rounded-lg text-sm flex items-center space-x-2 shadow-sm transition-colors">
-                            <i class="fa-solid fa-user-plus"></i>
-                            <span>Nuevo Usuario</span>
-                        </button>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <table class="w-full text-left border-collapse text-sm">
-                            <thead>
-                                <tr class="bg-gray-100 text-gray-600 text-xs uppercase tracking-wider font-semibold border-b border-gray-200">
-                                    <th class="p-4">Nombre Completo</th>
-                                    <th class="p-4">Correo Electrónico</th>
-                                    <th class="p-4">Rol Asignado</th>
-                                    <th class="p-4">Instancia / Oficina</th>
-                                    <th class="p-4 text-center">Acciones</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tabla-usuarios-body" class="divide-y divide-gray-200 text-gray-700">
-                                <tr>
-                                    <td class="p-4 font-semibold text-gray-800">José Raúl Martínez</td>
-                                    <td class="p-4 text-xs text-gray-500">jmartinez@alisoft.org</td>
-                                    <td class="p-4"><span class="bg-amber-500 text-gray-900 font-bold px-2.5 py-1 rounded text-xs">MASTER</span></td>
-                                    <td class="p-4 text-xs">Instancia Central</td>
-                                    <td class="p-4 text-center"><button class="text-brand-600 hover:text-brand-800"><i class="fa-solid fa-pen"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-4 font-semibold text-gray-800">Lic. Roberto Morales</td>
-                                    <td class="p-4 text-xs text-gray-500">rmorales@alisoft.org</td>
-                                    <td class="p-4"><span class="bg-purple-100 text-purple-800 font-bold px-2.5 py-1 rounded text-xs">Gerente</span></td>
-                                    <td class="p-4 text-xs">Dirección General</td>
-                                    <td class="p-4 text-center"><button class="text-brand-600 hover:text-brand-800"><i class="fa-solid fa-pen"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-4 font-semibold text-gray-800">Dra. Carmen Estrada</td>
-                                    <td class="p-4 text-xs text-gray-500">cestrada@alisoft.org</td>
-                                    <td class="p-4"><span class="bg-blue-100 text-blue-800 font-bold px-2.5 py-1 rounded text-xs">Director</span></td>
-                                    <td class="p-4 text-xs">Oficina Regional Oriente</td>
-                                    <td class="p-4 text-center"><button class="text-brand-600 hover:text-brand-800"><i class="fa-solid fa-pen"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-4 font-semibold text-gray-800">Ing. Mario Castillo</td>
-                                    <td class="p-4 text-xs text-gray-500">mcastillo@alisoft.org</td>
-                                    <td class="p-4"><span class="bg-indigo-100 text-indigo-800 font-bold px-2.5 py-1 rounded text-xs">Coordinador</span></td>
-                                    <td class="p-4 text-xs">Proyecto Corredor Seco</td>
-                                    <td class="p-4 text-center"><button class="text-brand-600 hover:text-brand-800"><i class="fa-solid fa-pen"></i></button></td>
-                                </tr>
-                                <tr>
-                                    <td class="p-4 font-semibold text-gray-800">Carlos Mendoza</td>
-                                    <td class="p-4 text-xs text-gray-500">cmendoza@alisoft.org</td>
-                                    <td class="p-4"><span class="bg-gray-100 text-gray-800 font-bold px-2.5 py-1 rounded text-xs">Técnico</span></td>
-                                    <td class="p-4 text-xs">Campo Zacapa</td>
-                                    <td class="p-4 text-center"><button class="text-brand-600 hover:text-brand-800"><i class="fa-solid fa-pen"></i></button></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                        <h3 class="text-lg font-bold text-gray-800">Gestión de Usuarios</h3>
                     </div>
                 </div>
 
                 <!-- 8. CONFIGURACIÓN INSTANCIA -->
                 <div id="tab-configuracion" class="tab-content hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 max-w-2xl">
-                        <h3 class="text-lg font-bold text-gray-800 mb-4">Configuración de la Instancia Institucional</h3>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                        <h3 class="text-lg font-bold text-gray-800">Configuración de la Instancia</h3>
                     </div>
                 </div>
 
@@ -352,65 +326,7 @@
         </div>
     </div>
 
-    <!-- MODAL FLOTANTE DE NUEVO USUARIO CORREGIDO -->
-    <div id="modal-usuario" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 space-y-4">
-            <div class="flex items-center justify-between border-b pb-3">
-                <h3 class="font-bold text-gray-800 text-base">Crear Nuevo Usuario</h3>
-                <button onclick="closeModalUser()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <form onsubmit="submitNewUser(event)" class="space-y-3 text-sm">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Nombre Completo</label>
-                    <input type="text" id="new-user-name" placeholder="Ej. Ana Lucía Gómez" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500" required>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Correo Electrónico</label>
-                    <input type="email" id="new-user-email" placeholder="usuario@alisoft.org" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500" required>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Rol en el Sistema</label>
-                    <select id="new-user-role" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500">
-                        <option value="Gerente">Gerente</option>
-                        <option value="Director">Director</option>
-                        <option value="Coordinador">Coordinador</option>
-                        <option value="Técnico">Técnico</option>
-                        <option value="MASTER">MASTER</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Instancia / Oficina / Proyecto</label>
-                    <input type="text" id="new-user-inst" placeholder="Ej. Oficina Regional Noroccidente" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500" required>
-                </div>
-                <div class="flex justify-end space-x-3 pt-3 border-t">
-                    <button type="button" onclick="closeModalUser()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm">Cancelar</button>
-                    <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium">Registrar Usuario</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL NUEVO REGISTRO DE CAMPO -->
-    <div id="modal-campo" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
-        <div class="bg-white rounded-xl shadow-2xl max-w-lg w-full p-6 space-y-4">
-            <div class="flex items-center justify-between border-b pb-3">
-                <h3 class="font-bold text-gray-800 text-base">Nuevo Registro de Captura de Campo</h3>
-                <button onclick="closeModalCampo()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <form onsubmit="submitCampo(event)" class="space-y-3 text-sm">
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Comunidad / Municipio</label>
-                    <input type="text" placeholder="Ej. Aldea San José, Jalapa" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500" required>
-                </div>
-                <div class="flex justify-end space-x-3 pt-3 border-t">
-                    <button type="button" onclick="closeModalCampo()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm">Cancelar</button>
-                    <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium">Guardar Registro</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- SCRIPT DE CONTROL -->
+    <!-- SCRIPT DE CONTROL Y GENERACIÓN DE REPORTES -->
     <script>
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
@@ -426,70 +342,153 @@
             }
         }
 
-        // Modales de Usuarios (Corrección para mostrarse correctamente como flotante)
-        function openModalUser() { 
-            const modal = document.getElementById('modal-usuario');
-            modal.classList.remove('hidden'); 
-            modal.classList.add('flex'); 
-        }
-        function closeModalUser() { 
-            const modal = document.getElementById('modal-usuario');
-            modal.classList.add('hidden'); 
-            modal.classList.remove('flex'); 
-        }
-        
-        function submitNewUser(e) {
-            e.preventDefault();
-            const name = document.getElementById('new-user-name').value;
-            const email = document.getElementById('new-user-email').value;
-            const role = document.getElementById('new-user-role').value;
-            const inst = document.getElementById('new-user-inst').value;
+        // Listas secundarias para los filtros dinámicos
+        const subFiltersData = {
+            indicador: [
+                "Porcentaje de familias con seguridad alimentaria",
+                "Hectáreas reforestadas en cuencas altas",
+                "Talleres de capacitación técnica impartidos"
+            ],
+            actividad: [
+                "Entrega de abono orgánico y semillas",
+                "Monitoreo de parcelas demostrativas",
+                "Asistencia técnica comunitaria"
+            ]
+        };
 
-            // Determinar color de badge según rol
-            let badgeClass = 'bg-gray-100 text-gray-800';
-            if(role === 'MASTER') badgeClass = 'bg-amber-500 text-gray-900 font-bold';
-            else if(role === 'Gerente') badgeClass = 'bg-purple-100 text-purple-800 font-bold';
-            else if(role === 'Director') badgeClass = 'bg-blue-100 text-blue-800 font-bold';
-            else if(role === 'Coordinador') badgeClass = 'bg-indigo-100 text-indigo-800 font-bold';
+        function toggleReportFilterOptions() {
+            const filterType = document.getElementById('report-filter-type').value;
+            const container = document.getElementById('dynamic-filter-container');
+            const label = document.getElementById('dynamic-label');
+            const select = document.getElementById('report-sub-filter');
 
-            const tbody = document.getElementById('tabla-usuarios-body');
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td class="p-4 font-semibold text-gray-800">${name}</td>
-                <td class="p-4 text-xs text-gray-500">${email}</td>
-                <td class="p-4"><span class="${badgeClass} px-2.5 py-1 rounded text-xs">${role}</span></td>
-                <td class="p-4 text-xs">${inst}</td>
-                <td class="p-4 text-center"><button class="text-brand-600 hover:text-brand-800"><i class="fa-solid fa-pen"></i></button></td>
-            `;
-            tbody.appendChild(newRow);
-            alert('Usuario creado correctamente y agregado al directorio.');
-            closeModalUser();
-            document.getElementById('new-user-name').value = '';
-            document.getElementById('new-user-email').value = '';
-            document.getElementById('new-user-inst').value = '';
+            select.innerHTML = '';
+
+            if (filterType === 'proyecto') {
+                container.style.display = 'none';
+            } else {
+                container.style.display = 'block';
+                if (filterType === 'indicador') {
+                    label.innerText = 'Seleccionar Indicador';
+                    subFiltersData.indicador.forEach(item => {
+                        const opt = document.createElement('option');
+                        opt.value = item;
+                        opt.innerText = item;
+                        select.appendChild(opt);
+                    });
+                } else if (filterType === 'actividad') {
+                    label.innerText = 'Seleccionar Actividad';
+                    subFiltersData.actividad.forEach(item => {
+                        const opt = document.createElement('option');
+                        opt.value = item;
+                        opt.innerText = item;
+                        select.appendChild(opt);
+                    });
+                }
+            }
         }
 
-        // Modales de Campo
-        function openModalCampo() { 
-            const modal = document.getElementById('modal-campo');
-            modal.classList.remove('hidden'); 
-            modal.classList.add('flex'); 
+        function updateProjectContext() {
+            applyReportFilter();
         }
-        function closeModalCampo() { 
-            const modal = document.getElementById('modal-campo');
-            modal.classList.add('hidden'); 
-            modal.classList.remove('flex'); 
+
+        function applyReportFilter() {
+            const projectName = document.getElementById('global-project-select').value;
+            const filterType = document.getElementById('report-filter-type').value;
+            const subFilterVal = document.getElementById('report-sub-filter').value;
+            const titleEl = document.getElementById('report-view-title');
+            const insightEl = document.getElementById('report-insight-text');
+
+            if (filterType === 'proyecto') {
+                titleEl.innerText = `Resumen Proyecto ${projectName}`;
+                insightEl.innerText = `El proyecto "${projectName}" avanza de manera favorable cumpliendo las metas físicas previstas. Se sugiere mantener la supervisión continua en las zonas con mayores índices de vulnerabilidad.`;
+            } else if (filterType === 'indicador') {
+                titleEl.innerText = `Resumen Indicador ${subFilterVal}`;
+                insightEl.innerText = `Análisis focalizado para el indicador "${subFilterVal}". Los registros actuales muestran un rendimiento estable, con una tendencia de cumplimiento proyectada al alza para el cierre del trimestre.`;
+            } else if (filterType === 'actividad') {
+                titleEl.innerText = `Resumen Actividad ${subFilterVal}`;
+                insightEl.innerText = `Seguimiento operativo de la actividad "${subFilterVal}". Ejecución en tiempo real con participación activa de los beneficiarios asignados en el territorio.`;
+            }
         }
-        function submitCampo(e) { e.preventDefault(); alert('Registro de campo guardado exitosamente.'); closeModalCampo(); }
 
         function generatePDFReport() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            doc.text("ALISOFT - INFORME EJECUTIVO", 14, 20);
-            doc.save("Informe_ALISOFT.pdf");
+            const projectName = document.getElementById('global-project-select').value;
+            const filterType = document.getElementById('report-filter-type').value;
+            const subFilterVal = document.getElementById('report-sub-filter').value;
+            
+            // Construir título exacto solicitado
+            let mainTitle = `Resumen Proyecto ${projectName}`;
+            if (filterType === 'indicador') mainTitle = `Resumen Indicador ${subFilterVal}`;
+            if (filterType === 'actividad') mainTitle = `Resumen Actividad ${subFilterVal}`;
+
+            // Encabezado Superior Izquierda
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(10);
+            doc.setTextColor(22, 163, 74); // Color brand-600
+            doc.text("ALISOFT", 14, 15);
+
+            doc.setFontSize(14);
+            doc.setTextColor(31, 41, 55);
+            doc.text(mainTitle, 14, 23);
+
+            // Encabezado Superior Derecha (Fecha, hora y usuario)
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(9);
+            doc.setTextColor(107, 114, 128);
+            doc.text("Generado por: José Raúl Martínez", 196, 15, { align: "right" });
+            doc.text("Fecha y Hora: 17/08/2026 14:52", 196, 20, { align: "right" });
+
+            // Línea separadora
+            doc.setDrawColor(209, 213, 219);
+            doc.setLineWidth(0.5);
+            doc.line(14, 27, 196, 27);
+
+            // Contenido del reporte en PDF
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(11);
+            doc.setTextColor(31, 41, 55);
+            doc.text("Análisis Ejecutivo e Insights", 14, 35);
+
+            doc.setFont("helvetica", "normal");
+            doc.setFontSize(9);
+            doc.setTextColor(75, 85, 99);
+            const insightText = document.getElementById('report-insight-text').innerText;
+            const splitInsight = doc.splitTextToSize(insightText, 182);
+            doc.text(splitInsight, 14, 41);
+
+            // Tabla resumen simulada
+            doc.autoTable({
+                startY: 55,
+                head: [['Componente / Métrica', 'Meta Programada', 'Ejecutado Real', 'Estatus']],
+                body: [
+                    ['Cobertura de Beneficiarios', '500 Familias', '450 Familias', 'En Tiempo'],
+                    ['Talleres Capacitación', '12 Talleres', '10 Talleres', 'En Tiempo'],
+                    ['Distribución de Insumos', '100%', '85%', 'Atención Requerida']
+                ],
+                theme: 'grid',
+                headStyles: { fillColor: [22, 101, 52] }
+            });
+
+            // Pie de página con número de página en la esquina inferior derecha
+            const pageCount = doc.internal.getNumberOfPages();
+            for(let i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(9);
+                doc.setTextColor(107, 114, 128);
+                doc.text(`Página ${i} de ${pageCount}`, 196, 287, { align: "right" });
+            }
+
+            doc.save("Informe_Ejecutivo_ALISOFT.pdf");
         }
 
+        // Inicializar gráficos del sistema
         window.addEventListener('DOMContentLoaded', () => {
+            toggleReportFilterOptions();
+
+            // Gráfica Dashboard Principal
             const ctxCurva = document.getElementById('chartCurvaS').getContext('2d');
             new Chart(ctxCurva, {
                 type: 'line',
@@ -504,6 +503,25 @@
                 data: {
                     labels: ['Seguridad', 'Reforestación', 'Capacitaciones'],
                     datasets: [{ label: 'Ejecutado', data: [420, 65, 22], backgroundColor: '#16a34a' }]
+                }
+            });
+
+            // Gráficas Power BI en Centro de Reportes
+            const ctxPB1 = document.getElementById('reportChartPowerBI1').getContext('2d');
+            new Chart(ctxPB1, {
+                type: 'line',
+                data: {
+                    labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
+                    datasets: [{ label: 'Avance Acumulado (%)', data: [20, 45, 68, 84.2], borderColor: '#15803d', backgroundColor: 'rgba(22, 163, 48, 0.1)', fill: true }]
+                }
+            });
+
+            const ctxPB2 = document.getElementById('reportChartPowerBI2').getContext('2d');
+            new Chart(ctxPB2, {
+                type: 'bar',
+                data: {
+                    labels: ['Componente A', 'Componente B', 'Componente C'],
+                    datasets: [{ label: 'Meta Alcanzada', data: [90, 75, 88], backgroundColor: ['#16a34a', '#3b82f6', '#f59e0b'] }]
                 }
             });
         });
