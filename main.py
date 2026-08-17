@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.responses import FileResponse
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, Column, Integer, String, Float, Date, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
@@ -96,7 +97,7 @@ class ProyectoResponse(BaseModel):
 # 5. Rutas de ejemplo básicas de la API
 @app.get("/")
 def read_root():
-    return {"mensaje": "Sistema CARI corriendo en producción correctamente", "estado": "activo"}
+    return FileResponse("index.html")
 
 @app.post("/proyectos/", response_model=ProyectoResponse, status_code=status.HTTP_201_CREATED)
 def crear_proyecto(proyecto: ProyectoCreate, db: Session = Depends(get_db)):
