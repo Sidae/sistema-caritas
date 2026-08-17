@@ -164,7 +164,6 @@
                         </div>
                     </div>
 
-                    <!-- Gráficos Principales -->
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                             <h3 class="text-base font-bold text-gray-800 mb-4 flex items-center justify-between">
@@ -187,7 +186,7 @@
                     </div>
                 </div>
 
-                <!-- 2. CAPTURA DE CAMPO (Nuevo Módulo) -->
+                <!-- 2. CAPTURA DE CAMPO -->
                 <div id="tab-campo" class="tab-content hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
@@ -203,9 +202,6 @@
                     <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
                         <div class="p-4 border-b border-gray-200 flex items-center justify-between bg-gray-50">
                             <span class="text-sm font-bold text-gray-700">Bitácora de Visitas y Entregas Recientes</span>
-                            <div class="flex items-center space-x-2">
-                                <input type="text" placeholder="Buscar comunidad o técnico..." class="text-xs border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:border-brand-500">
-                            </div>
                         </div>
                         <div class="overflow-x-auto">
                             <table class="w-full text-left border-collapse text-sm">
@@ -220,7 +216,7 @@
                                         <th class="p-4 text-center">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody id="tabla-campo-body" class="divide-y divide-gray-200 text-gray-700">
+                                <tbody class="divide-y divide-gray-200 text-gray-700">
                                     <tr class="hover:bg-gray-50">
                                         <td class="p-4 text-xs font-medium">14/08/2026</td>
                                         <td class="p-4 font-semibold text-gray-800">Aldea El Jícaro, Zacapa</td>
@@ -230,19 +226,6 @@
                                         <td class="p-4"><span class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Validado</span></td>
                                         <td class="p-4 text-center">
                                             <button onclick="verDetalleCampo(1)" class="text-brand-600 hover:text-brand-800 p-1"><i class="fa-solid fa-eye"></i></button>
-                                            <button class="text-blue-600 hover:text-blue-800 p-1 ml-2"><i class="fa-solid fa-pen"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr class="hover:bg-gray-50">
-                                        <td class="p-4 text-xs font-medium">12/08/2026</td>
-                                        <td class="p-4 font-semibold text-gray-800">Caserío Los Pinos, Cubulco</td>
-                                        <td class="p-4">Capacitación en Huertos Hidropónicos</td>
-                                        <td class="p-4">28 Personas</td>
-                                        <td class="p-4 text-xs">Ana Lucía Gómez (Técnico)</td>
-                                        <td class="p-4"><span class="bg-amber-100 text-amber-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full">Pendiente Revisión</span></td>
-                                        <td class="p-4 text-center">
-                                            <button onclick="verDetalleCampo(2)" class="text-brand-600 hover:text-brand-800 p-1"><i class="fa-solid fa-eye"></i></button>
-                                            <button class="text-blue-600 hover:text-blue-800 p-1 ml-2"><i class="fa-solid fa-pen"></i></button>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -259,49 +242,6 @@
                                 <h3 class="text-lg font-bold text-gray-800">Control Financiero y Comprobantes</h3>
                                 <p class="text-xs text-gray-500 mt-1">Gestión de gastos operativos, liquidaciones y carga de facturas digitales.</p>
                             </div>
-                            <button onclick="openModalGasto()" class="bg-brand-600 hover:bg-brand-700 text-white font-medium px-4 py-2 rounded-lg text-sm flex items-center space-x-2 shadow-sm transition-colors">
-                                <i class="fa-solid fa-receipt"></i>
-                                <span>Registrar Comprobante / Gasto</span>
-                            </button>
-                        </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left border-collapse text-sm">
-                                <thead>
-                                    <tr class="bg-gray-100 text-gray-600 text-xs uppercase tracking-wider font-semibold border-b border-gray-200">
-                                        <th class="p-3">No. Comprobante</th>
-                                        <th class="p-3">Fecha</th>
-                                        <th class="p-3">Concepto / Proveedor</th>
-                                        <th class="p-3">Categoría</th>
-                                        <th class="p-3 text-right">Monto (Q)</th>
-                                        <th class="p-3 text-center">Adjunto</th>
-                                        <th class="p-3 text-center">Acciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200 text-gray-700 text-sm">
-                                    <tr>
-                                        <td class="p-3 font-semibold">FAC-04921</td>
-                                        <td class="p-3">10/08/2026</td>
-                                        <td class="p-3">Insumos Agrícolas San Juan S.A.</td>
-                                        <td class="p-3 text-xs bg-gray-100 px-2 py-1 rounded w-fit">Semillas y Abonos</td>
-                                        <td class="p-3 text-right font-bold text-gray-800">Q 18,500.00</td>
-                                        <td class="p-3 text-center text-brand-600"><i class="fa-solid fa-file-pdf text-lg cursor-pointer"></i></td>
-                                        <td class="p-3 text-center">
-                                            <button class="text-gray-500 hover:text-gray-800"><i class="fa-solid fa-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-3 font-semibold">FAC-04890</td>
-                                        <td class="p-3">02/08/2026</td>
-                                        <td class="p-3">Hotel y Restaurante Posada Real</td>
-                                        <td class="p-3 text-xs bg-gray-100 px-2 py-1 rounded w-fit">Viáticos y Hospedaje</td>
-                                        <td class="p-3 text-right font-bold text-gray-800">Q 4,200.00</td>
-                                        <td class="p-3 text-center text-brand-600"><i class="fa-solid fa-file-pdf text-lg cursor-pointer"></i></td>
-                                        <td class="p-3 text-center">
-                                            <button class="text-gray-500 hover:text-gray-800"><i class="fa-solid fa-trash"></i></button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </div>
                 </div>
@@ -313,52 +253,6 @@
                             <h3 class="text-lg font-bold text-gray-800">Matriz de Indicadores del Proyecto</h3>
                             <p class="text-xs text-gray-500 mt-1">Definición de metas, líneas base y frecuencias de medición.</p>
                         </div>
-                        <button class="bg-brand-600 hover:bg-brand-700 text-white font-medium px-4 py-2 rounded-lg text-sm flex items-center space-x-2 shadow-sm transition-colors">
-                            <i class="fa-solid fa-plus"></i>
-                            <span>Nuevo Indicador</span>
-                        </button>
-                    </div>
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                        <table class="w-full text-left border-collapse text-sm">
-                            <thead>
-                                <tr class="bg-gray-100 text-gray-600 text-xs uppercase tracking-wider font-semibold border-b border-gray-200">
-                                    <th class="p-4">Código</th>
-                                    <th class="p-4">Descripción del Indicador</th>
-                                    <th class="p-4 text-center">Línea Base</th>
-                                    <th class="p-4 text-center">Meta Anual</th>
-                                    <th class="p-4 text-center">Ejecutado</th>
-                                    <th class="p-4">Progreso</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200 text-gray-700">
-                                <tr>
-                                    <td class="p-4 font-bold text-brand-700">IND-01</td>
-                                    <td class="p-4">Familias con seguridad alimentaria mejorada</td>
-                                    <td class="p-4 text-center">120</td>
-                                    <td class="p-4 text-center font-semibold">500</td>
-                                    <td class="p-4 text-center font-bold text-emerald-600">420</td>
-                                    <td class="p-4">
-                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                            <div class="bg-brand-600 h-2.5 rounded-full" style="width: 84%"></div>
-                                        </div>
-                                        <span class="text-[10px] text-gray-400 mt-0.5 block">84% completado</span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-4 font-bold text-brand-700">IND-02</td>
-                                    <td class="p-4">Hectáreas reforestadas en cuencas altas</td>
-                                    <td class="p-4 text-center">15</td>
-                                    <td class="p-4 text-center font-semibold">80</td>
-                                    <td class="p-4 text-center font-bold text-emerald-600">65</td>
-                                    <td class="p-4">
-                                        <div class="w-full bg-gray-200 rounded-full h-2.5">
-                                            <div class="bg-brand-600 h-2.5 rounded-full" style="width: 81%"></div>
-                                        </div>
-                                        <span class="text-[10px] text-gray-400 mt-0.5 block">81% completado</span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
                     </div>
                 </div>
 
@@ -366,36 +260,6 @@
                 <div id="tab-cronograma" class="tab-content hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
                         <h3 class="text-lg font-bold text-gray-800 mb-2">Cronograma de Ejecución y Fases del Proyecto</h3>
-                        <p class="text-xs text-gray-500 mb-6">Seguimiento de hitos trimestrales y entregables críticos.</p>
-                        <div class="space-y-4">
-                            <div>
-                                <div class="flex justify-between text-xs font-semibold mb-1">
-                                    <span class="text-gray-700">Fase 1: Diagnóstico y Línea Base Comunitaria</span>
-                                    <span class="text-emerald-600 font-bold">100% (Completado)</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-3">
-                                    <div class="bg-emerald-500 h-3 rounded-full" style="width: 100%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-xs font-semibold mb-1">
-                                    <span class="text-gray-700">Fase 2: Entrega de Insumos y Capacitación Técnica</span>
-                                    <span class="text-brand-600 font-bold">85% En ejecución</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-3">
-                                    <div class="bg-brand-600 h-3 rounded-full" style="width: 85%"></div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="flex justify-between text-xs font-semibold mb-1">
-                                    <span class="text-gray-700">Fase 3: Evaluación de Impacto y Cierre de Proyecto</span>
-                                    <span class="text-gray-400 font-bold">20% Programado Q4</span>
-                                </div>
-                                <div class="w-full bg-gray-200 rounded-full h-3">
-                                    <div class="bg-gray-400 h-3 rounded-full" style="width: 20%"></div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
 
@@ -413,12 +277,12 @@
                     </div>
                 </div>
 
-                <!-- 7. GESTIÓN DE USUARIOS (Actualizado con nuevos roles) -->
+                <!-- 7. GESTIÓN DE USUARIOS (Con módulo de Creación habilitado) -->
                 <div id="tab-usuarios" class="tab-content hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex items-center justify-between">
                         <div>
                             <h3 class="text-lg font-bold text-gray-800">Directorio de Usuarios y Jerarquía de Roles</h3>
-                            <p class="text-xs text-gray-500 mt-1">Control de acceso basado en roles: MASTER, Gerente, Director, Coordinador y Técnico.</p>
+                            <p class="text-xs text-gray-500 mt-1">Control de accesos para MASTER, Gerente, Director, Coordinador y Técnico.</p>
                         </div>
                         <button onclick="openModalUser()" class="bg-brand-600 hover:bg-brand-700 text-white font-medium px-4 py-2 rounded-lg text-sm flex items-center space-x-2 shadow-sm transition-colors">
                             <i class="fa-solid fa-user-plus"></i>
@@ -436,51 +300,41 @@
                                     <th class="p-4 text-center">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-200 text-gray-700">
+                            <tbody id="tabla-usuarios-body" class="divide-y divide-gray-200 text-gray-700">
                                 <tr>
                                     <td class="p-4 font-semibold text-gray-800">José Raúl Martínez</td>
                                     <td class="p-4 text-xs text-gray-500">jmartinez@alisoft.org</td>
                                     <td class="p-4"><span class="bg-amber-500 text-gray-900 font-bold px-2.5 py-1 rounded text-xs">MASTER</span></td>
                                     <td class="p-4 text-xs">Instancia Central</td>
-                                    <td class="p-4 text-center">
-                                        <button class="text-brand-600 hover:text-brand-800 p-1"><i class="fa-solid fa-pen"></i></button>
-                                    </td>
+                                    <td class="p-4 text-center"><button class="text-brand-600 hover:text-brand-800"><i class="fa-solid fa-pen"></i></button></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4 font-semibold text-gray-800">Lic. Roberto Morales</td>
                                     <td class="p-4 text-xs text-gray-500">rmorales@alisoft.org</td>
                                     <td class="p-4"><span class="bg-purple-100 text-purple-800 font-bold px-2.5 py-1 rounded text-xs">Gerente</span></td>
                                     <td class="p-4 text-xs">Dirección General</td>
-                                    <td class="p-4 text-center">
-                                        <button class="text-brand-600 hover:text-brand-800 p-1"><i class="fa-solid fa-pen"></i></button>
-                                    </td>
+                                    <td class="p-4 text-center"><button class="text-brand-600 hover:text-brand-800"><i class="fa-solid fa-pen"></i></button></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4 font-semibold text-gray-800">Dra. Carmen Estrada</td>
                                     <td class="p-4 text-xs text-gray-500">cestrada@alisoft.org</td>
                                     <td class="p-4"><span class="bg-blue-100 text-blue-800 font-bold px-2.5 py-1 rounded text-xs">Director</span></td>
                                     <td class="p-4 text-xs">Oficina Regional Oriente</td>
-                                    <td class="p-4 text-center">
-                                        <button class="text-brand-600 hover:text-brand-800 p-1"><i class="fa-solid fa-pen"></i></button>
-                                    </td>
+                                    <td class="p-4 text-center"><button class="text-brand-600 hover:text-brand-800"><i class="fa-solid fa-pen"></i></button></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4 font-semibold text-gray-800">Ing. Mario Castillo</td>
                                     <td class="p-4 text-xs text-gray-500">mcastillo@alisoft.org</td>
                                     <td class="p-4"><span class="bg-indigo-100 text-indigo-800 font-bold px-2.5 py-1 rounded text-xs">Coordinador</span></td>
                                     <td class="p-4 text-xs">Proyecto Corredor Seco</td>
-                                    <td class="p-4 text-center">
-                                        <button class="text-brand-600 hover:text-brand-800 p-1"><i class="fa-solid fa-pen"></i></button>
-                                    </td>
+                                    <td class="p-4 text-center"><button class="text-brand-600 hover:text-brand-800"><i class="fa-solid fa-pen"></i></button></td>
                                 </tr>
                                 <tr>
                                     <td class="p-4 font-semibold text-gray-800">Carlos Mendoza</td>
                                     <td class="p-4 text-xs text-gray-500">cmendoza@alisoft.org</td>
                                     <td class="p-4"><span class="bg-gray-100 text-gray-800 font-bold px-2.5 py-1 rounded text-xs">Técnico</span></td>
                                     <td class="p-4 text-xs">Campo Zacapa</td>
-                                    <td class="p-4 text-center">
-                                        <button class="text-brand-600 hover:text-brand-800 p-1"><i class="fa-solid fa-pen"></i></button>
-                                    </td>
+                                    <td class="p-4 text-center"><button class="text-brand-600 hover:text-brand-800"><i class="fa-solid fa-pen"></i></button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -491,27 +345,48 @@
                 <div id="tab-configuracion" class="tab-content hidden space-y-6">
                     <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 max-w-2xl">
                         <h3 class="text-lg font-bold text-gray-800 mb-4">Configuración de la Instancia Institucional</h3>
-                        <form id="config-form" onsubmit="saveConfig(event)" class="space-y-4">
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Nombre de la Institución u Oficina</label>
-                                <input type="text" id="config-inst-name" value="ALISOFT - Sistema M&E" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500" required>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Siglas o Código de Instancia</label>
-                                <input type="text" id="config-inst-code" value="AI" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500" required>
-                            </div>
-                            <div>
-                                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">URL o Texto del Logotipo</label>
-                                <input type="text" id="config-inst-logo" value="AI" class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-brand-500" required>
-                            </div>
-                            <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white font-medium px-4 py-2 rounded-lg text-sm shadow-sm transition-colors">
-                                Guardar Cambios de Instancia
-                            </button>
-                        </form>
                     </div>
                 </div>
 
             </main>
+        </div>
+    </div>
+
+    <!-- MODAL NUEVO USUARIO (Módulo de Creación Añadido) -->
+    <div id="modal-usuario" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-xl shadow-2xl max-w-md w-full p-6 space-y-4">
+            <div class="flex items-center justify-between border-b pb-3">
+                <h3 class="font-bold text-gray-800 text-base">Crear Nuevo Usuario</h3>
+                <button onclick="closeModalUser()" class="text-gray-400 hover:text-gray-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <form onsubmit="submitNewUser(event)" class="space-y-3 text-sm">
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Nombre Completo</label>
+                    <input type="text" id="new-user-name" placeholder="Ej. Ana Lucía Gómez" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Correo Electrónico</label>
+                    <input type="email" id="new-user-email" placeholder="usuario@alisoft.org" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Rol en el Sistema</label>
+                    <select id="new-user-role" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500">
+                        <option value="Gerente">Gerente</option>
+                        <option value="Director">Director</option>
+                        <option value="Coordinador">Coordinador</option>
+                        <option value="Técnico">Técnico</option>
+                        <option value="MASTER">MASTER</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Instancia / Oficina / Proyecto</label>
+                    <input type="text" id="new-user-inst" placeholder="Ej. Oficina Regional Noroccidente" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500" required>
+                </div>
+                <div class="flex justify-end space-x-3 pt-3 border-t">
+                    <button type="button" onclick="closeModalUser()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm">Cancelar</button>
+                    <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium">Registrar Usuario</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -527,29 +402,6 @@
                     <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Comunidad / Municipio</label>
                     <input type="text" placeholder="Ej. Aldea San José, Jalapa" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500" required>
                 </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Actividad Realizada</label>
-                    <select class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500">
-                        <option>Entrega de Insumos / Semillas</option>
-                        <option>Capacitación Técnica</option>
-                        <option>Visita de Monitoreo M&E</option>
-                        <option>Verificación de Infraestructura</option>
-                    </select>
-                </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Beneficiarios Atendidos</label>
-                        <input type="number" placeholder="Ej. 35" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500" required>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Fecha de Visita</label>
-                        <input type="date" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500" required>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Observaciones / Hallazgos</label>
-                    <textarea rows="2" placeholder="Detalle observaciones importantes de la visita..." class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500"></textarea>
-                </div>
                 <div class="flex justify-end space-x-3 pt-3 border-t">
                     <button type="button" onclick="closeModalCampo()" class="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded-lg text-sm">Cancelar</button>
                     <button type="submit" class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-lg text-sm font-medium">Guardar Registro</button>
@@ -558,116 +410,85 @@
         </div>
     </div>
 
-    <!-- SCRIPT DE CONTROL Y GRÁFICAS -->
+    <!-- SCRIPT DE CONTROL -->
     <script>
-        // Control de Pestañas
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.nav-link').forEach(el => {
                 el.classList.remove('bg-brand-800', 'text-white');
                 el.classList.add('text-brand-200');
             });
-
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
             const activeLink = document.querySelector(`[data-target="${tabId}"]`);
             if(activeLink) {
                 activeLink.classList.add('bg-brand-800', 'text-white');
                 activeLink.classList.remove('text-brand-200');
             }
-
-            const titles = {
-                'dashboard': 'Dashboard Gerencial',
-                'campo': 'Captura de Campo',
-                'operativo': 'Módulo Operativo y Financiero',
-                'indicadores': 'Matriz de Indicadores',
-                'cronograma': 'Cronograma y Avance de Fases',
-                'reportes': 'Centro de Reportes PDF',
-                'usuarios': 'Gestión de Usuarios y Roles',
-                'configuracion': 'Configuración de Instancia'
-            };
-            document.getElementById('current-page-title').innerText = titles[tabId] || 'ALISOFT';
         }
 
-        // Cambio de Proyecto Global
-        function changeGlobalProject(val) {
-            if(val === 'p1') {
-                document.getElementById('dash-avance-fisico').innerText = '78.5%';
-                document.getElementById('dash-presupuesto').innerText = 'Q 450,200';
-                document.getElementById('dash-ia-status').innerText = 'EN TIEMPO';
-            } else {
-                document.getElementById('dash-avance-fisico').innerText = '62.0%';
-                document.getElementById('dash-presupuesto').innerText = 'Q 290,000';
-                document.getElementById('dash-ia-status').innerText = 'ATENCIÓN REQUERIDA';
-            }
+        // Modales de Usuarios
+        function openModalUser() { document.getElementById('modal-usuario').classList.remove('hidden'); document.getElementById('modal-usuario').classList.add('flex'); }
+        function closeModalUser() { document.getElementById('modal-usuario').classList.add('hidden'); document.getElementById('modal-usuario').classList.remove('flex'); }
+        
+        function submitNewUser(e) {
+            e.preventDefault();
+            const name = document.getElementById('new-user-name').value;
+            const email = document.getElementById('new-user-email').value;
+            const role = document.getElementById('new-user-role').value;
+            const inst = document.getElementById('new-user-inst').value;
+
+            // Determinar color de badge según rol
+            let badgeClass = 'bg-gray-100 text-gray-800';
+            if(role === 'MASTER') badgeClass = 'bg-amber-500 text-gray-900 font-bold';
+            else if(role === 'Gerente') badgeClass = 'bg-purple-100 text-purple-800 font-bold';
+            else if(role === 'Director') badgeClass = 'bg-blue-100 text-blue-800 font-bold';
+            else if(role === 'Coordinador') badgeClass = 'bg-indigo-100 text-indigo-800 font-bold';
+
+            const tbody = document.getElementById('tabla-usuarios-body');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td class="p-4 font-semibold text-gray-800">${name}</td>
+                <td class="p-4 text-xs text-gray-500">${email}</td>
+                <td class="p-4"><span class="${badgeClass} px-2.5 py-1 rounded text-xs">${role}</span></td>
+                <td class="p-4 text-xs">${inst}</td>
+                <td class="p-4 text-center"><button class="text-brand-600 hover:text-brand-800"><i class="fa-solid fa-pen"></i></button></td>
+            `;
+            tbody.appendChild(newRow);
+            alert('Usuario creado correctamente y agregado al directorio.');
+            closeModalUser();
+            document.getElementById('new-user-name').value = '';
+            document.getElementById('new-user-email').value = '';
+            document.getElementById('new-user-inst').value = '';
         }
 
         // Modales de Campo
         function openModalCampo() { document.getElementById('modal-campo').classList.remove('hidden'); document.getElementById('modal-campo').classList.add('flex'); }
         function closeModalCampo() { document.getElementById('modal-campo').classList.add('hidden'); document.getElementById('modal-campo').classList.remove('flex'); }
         function submitCampo(e) { e.preventDefault(); alert('Registro de campo guardado exitosamente.'); closeModalCampo(); }
-        function verDetalleCampo(id) { alert('Abriendo detalle completo del registro de campo No. ' + id); }
 
-        // Configuración de Instancia
-        function saveConfig(e) {
-            e.preventDefault();
-            const name = document.getElementById('config-inst-name').value;
-            const code = document.getElementById('config-inst-code').value;
-            document.getElementById('sidebar-inst-name').innerText = name;
-            document.getElementById('sidebar-logo-text').innerText = code;
-            alert('Configuración de instancia actualizada correctamente.');
-        }
-
-        // Exportar Reporte PDF con jsPDF
         function generatePDFReport() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            doc.setFont("helvetica", "bold");
-            doc.setFontSize(18);
-            doc.text("ALISOFT - INFORME EJECUTIVO INSTITUCIONAL", 14, 20);
-            doc.setFontSize(10);
-            doc.setFont("helvetica", "normal");
-            doc.text("Fecha de generación: 17/08/2026", 14, 28);
-            doc.text("Instancia: Sistema Central ALISOFT", 14, 34);
-
-            doc.autoTable({
-                startY: 42,
-                head: [['Indicador / Componente', 'Meta Anual', 'Ejecutado', 'Estatus']],
-                body: [
-                    ['Familias con seguridad alimentaria', '500', '420', '84% (En curso)'],
-                    ['Hectáreas reforestadas', '80', '65', '81% (En curso)'],
-                    ['Talleres de capacitación técnica', '24', '22', '91% (Óptimo)']
-                ],
-            });
-
-            doc.save("Informe_Ejecutivo_ALISOFT.pdf");
+            doc.text("ALISOFT - INFORME EJECUTIVO", 14, 20);
+            doc.save("Informe_ALISOFT.pdf");
         }
 
-        // Inicializar Gráficas Chart.js
         window.addEventListener('DOMContentLoaded', () => {
             const ctxCurva = document.getElementById('chartCurvaS').getContext('2d');
             new Chart(ctxCurva, {
                 type: 'line',
                 data: {
-                    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                    datasets: [
-                        { label: 'Planificado (Curva S)', data: [10, 20, 35, 45, 60, 70, 80, 88, 92, 96, 98, 100], borderColor: '#9ca3af', tension: 0.3 },
-                        { label: 'Ejecutado Real', data: [12, 22, 33, 48, 58, 72, 82, 85, 0, 0, 0, 0], borderColor: '#16a34a', backgroundColor: 'rgba(22, 163, 74, 0.1)', fill: true, tension: 0.3 }
-                    ]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
+                    labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago'],
+                    datasets: [{ label: 'Ejecutado Real', data: [12, 22, 33, 48, 58, 72, 82, 85], borderColor: '#16a34a', fill: true }]
+                }
             });
-
             const ctxInd = document.getElementById('chartIndicadores').getContext('2d');
             new Chart(ctxInd, {
                 type: 'bar',
                 data: {
-                    labels: ['Seguridad Alimentaria', 'Reforestación', 'Capacitaciones', 'Infraestructura'],
-                    datasets: [
-                        { label: 'Meta', data: [500, 80, 24, 10], backgroundColor: '#e5e7eb' },
-                        { label: 'Ejecutado', data: [420, 65, 22, 8], backgroundColor: '#16a34a' }
-                    ]
-                },
-                options: { responsive: true, maintainAspectRatio: false }
+                    labels: ['Seguridad', 'Reforestación', 'Capacitaciones'],
+                    datasets: [{ label: 'Ejecutado', data: [420, 65, 22], backgroundColor: '#16a34a' }]
+                }
             });
         });
     </script>
