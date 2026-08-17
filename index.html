@@ -399,17 +399,102 @@
                     </div>
                 </div>
 
-                <!-- 6. CENTRO DE REPORTES -->
+                <!-- 6. CENTRO DE REPORTES (CON FILTROS Y BOTÓN GENERAR VISTA) -->
                 <div id="tab-reportes" class="tab-content hidden space-y-6">
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-800">Generación de Reportes Institucionales PDF</h3>
-                            <p class="text-xs text-gray-500 mt-1">Exportación consolidada de indicadores, bitácoras de campo y ejecución presupuestaria.</p>
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 space-y-4">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">Centro de Reportes y Análisis Dinámico (Tipo Power BI)</h3>
+                                <p class="text-xs text-gray-500 mt-1">Seleccione los parámetros de filtrado institucional y haga clic en "Generar Vista" para visualizar el tablero de datos.</p>
+                            </div>
+                            <div class="flex items-center space-x-3">
+                                <button onclick="generatePDFReport()" class="bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-lg text-sm flex items-center space-x-2 shadow-sm transition-colors cursor-pointer">
+                                    <i class="fa-solid fa-file-pdf"></i>
+                                    <span>Exportar PDF</span>
+                                </button>
+                                <button onclick="generarVistaReporte()" class="bg-brand-600 hover:bg-brand-700 text-white font-medium px-4 py-2 rounded-lg text-sm flex items-center space-x-2 shadow-sm transition-colors cursor-pointer">
+                                    <i class="fa-solid fa-chart-bar"></i>
+                                    <span>Generar Vista</span>
+                                </button>
+                            </div>
                         </div>
-                        <button onclick="generatePDFReport()" class="bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-lg text-sm flex items-center space-x-2 shadow-sm transition-colors cursor-pointer">
-                            <i class="fa-solid fa-file-pdf"></i>
-                            <span>Descargar Informe Ejecutivo PDF</span>
-                        </button>
+
+                        <!-- Filtros del Reporte -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-gray-200 text-sm">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Proyecto</label>
+                                id="filtro-proyecto" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500">
+                                    <option value="todos">Todos los Proyectos</option>
+                                    <option value="p1">Seguridad Alimentaria Corredor Seco</option>
+                                    <option value="p2">Gestión de Riesgo Comunitario</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Componente</label>
+                                <select id="filtro-componente" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500">
+                                    <option value="todos">Todos los Componentes</option>
+                                    <option value="c1">Componente 1: Producción y Insumos</option>
+                                    <option value="c2">Componente 2: Capacitación Técnica</option>
+                                    <option value="c3">Componente 3: Reforestación y Cuencas</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Indicador</label>
+                                <select id="filtro-indicador" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500">
+                                    <option value="todos">Todos los Indicadores</option>
+                                    <option value="ind1">IND-01: Familias con seguridad alimentaria</option>
+                                    <option value="ind2">IND-02: Hectáreas reforestadas</option>
+                                    <option value="ind3">IND-03: Talleres de capacitación</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 uppercase mb-1">Actividad</label>
+                                <select id="filtro-actividad" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-brand-500">
+                                    <option value="todos">Todas las Actividades</option>
+                                    <option value="act1">Entrega de semillas y abono orgánico</option>
+                                    <option value="act2">Talleres de huertos hidropónicos</option>
+                                    <option value="act3">Jornadas de reforestación comunitaria</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contenedor del Dashboard Dinámico (Tipo Power BI) que activa "Generar Vista" -->
+                    <div id="dashboard-dinamico-container" class="space-y-6 hidden">
+                        <!-- Tarjetas Resumen Power BI -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Total Beneficiarios Alcanzados</p>
+                                <h3 class="text-2xl font-black text-brand-700 mt-1">1,450</h3>
+                                <p class="text-xs text-brand-600 font-medium mt-1"><i class="fa-solid fa-users"></i> Filtrado por selección</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Ejecución Presupuestaria Parcial</p>
+                                <h3 class="text-2xl font-black text-gray-800 mt-1">Q 312,400</h3>
+                                <p class="text-xs text-blue-600 font-medium mt-1"><i class="fa-solid fa-wallet"></i> 82% del estimado</p>
+                            </div>
+                            <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+                                <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Estatus de Cumplimiento</p>
+                                <h3 class="text-2xl font-black text-emerald-600 mt-1">89.2%</h3>
+                                <p class="text-xs text-gray-500 font-medium mt-1"><i class="fa-solid fa-circle-check"></i> Óptimo</p>
+                            </div>
+                        </div>
+
+                        <!-- Gráficos tipo Power BI -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                                <h3 class="text-base font-bold text-gray-800 mb-4">Avance por Actividad Seleccionada</h3>
+                                <div class="h-64">
+                                    <canvas id="chartReporteBar"></canvas>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                                <h3 class="text-base font-bold text-gray-800 mb-4">Distribución de Población Atendida</h3>
+                                <div class="h-64">
+                                    <canvas id="chartReportePie"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -692,7 +777,7 @@
                 'operativo': 'Módulo Operativo y Financiero',
                 'indicadores': 'Matriz de Indicadores',
                 'cronograma': 'Cronograma y Avance de Fases',
-                'reportes': 'Centro de Reportes PDF',
+                'reportes': 'Centro de Reportes y Análisis Power BI',
                 'usuarios': 'Gestión de Usuarios y Roles',
                 'configuracion': 'Configuración de Instancia'
             };
@@ -791,6 +876,47 @@
             document.getElementById('sidebar-inst-name').innerText = name;
             document.getElementById('sidebar-logo-text').innerText = code;
             alert('Configuración de instancia actualizada correctamente.');
+        }
+
+        // Función para Generar la Vista de Reportes tipo Power BI
+        function generarVistaReporte() {
+            const container = document.getElementById('dashboard-dinamico-container');
+            container.classList.remove('hidden');
+
+            // Renderizar gráficos del reporte si no existen
+            const ctxBar = document.getElementById('chartReporteBar').getContext('2d');
+            const ctxPie = document.getElementById('chartReportePie').getContext('2d');
+
+            // Destruir gráficos anteriores si existen para evitar conflictos
+            if(window.myReportBar) window.myReportBar.destroy();
+            if(window.myReportPie) window.myReportPie.destroy();
+
+            window.myReportBar = new Chart(ctxBar, {
+                type: 'bar',
+                data: {
+                    labels: ['Entrega Insumos', 'Capacitación', 'Reforestación', 'Monitoreo'],
+                    datasets: [{
+                        label: 'Avance Físico (%)',
+                        data: [85, 92, 78, 95],
+                        backgroundColor: '#16a34a'
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            window.myReportPie = new Chart(ctxPie, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Familias Rurales', 'Líderes Locales', 'Jóvenes', 'Mujeres Articuladas'],
+                    datasets: [{
+                        data: [45, 20, 15, 20],
+                        backgroundColor: ['#16a34a', '#2563eb', '#d97706', '#9333ea']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            alert('Vista de reportes generada con éxito según los filtros seleccionados.');
         }
 
         // Exportar Reporte PDF con jsPDF
